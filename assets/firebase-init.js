@@ -2,7 +2,7 @@
 // ES module init for Firebase (modular SDK). Paste your Firebase config here.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -33,6 +33,42 @@ onAuthStateChanged(auth, (user)=>{
     console.log('Firebase auth state: signed in, uid=', user.uid);
   } else {
     console.log('Firebase auth state: NOT signed in');
+  }
+});
+
+// Ensure a user document exists in `users/{uid}` with a default role='user'.
+// This is a lightweight approach for role management in a frontend-only project.
+async function ensureUserDoc(user){
+  if(!user) return;
+  try{
+    const uref = doc(db, 'users', user.uid);
+    const snap = await getDoc(uref);
+    if(!snap.exists()){
+      await setDoc(uref, {
+        uid: user.uid,
+        displayName: user.displayName || null,
+        photoURL: user.photoURL || null,
+        role: 'user',
+        createdAt: serverTimestamp()
+      });
+      console.log('Created users doc for', user.uid);
+    } else {
+      // update basic profile info (but don't overwrite role)
+      const data = snap.data();
+      const patch = {};
+      if(!data.displayName && user.displayName) patch.displayName = user.displayName;
+      if(!data.photoURL && user.photoURL) patch.photoURL = user.photoURL;
+      if(Object.keys(patch).length) await setDoc(uref, patch, { merge: true });
+    }
+  }catch(e){
+    console.warn('ensureUserDoc error', e);
+  }
+}
+
+// Keep user doc in sync on auth changes
+onAuthStateChanged(auth, (user)=>{
+  if(user){
+    ensureUserDoc(user);
   }
 });
 

@@ -2,7 +2,7 @@
 // App logic using Firebase modular SDK. Handles creating posts (with optional image),
 // rendering realtime feed and adding comments (stored under posts/{postId}/comments).
 
-import { db, storage } from './firebase-init.js';
+import { db, storage, auth } from './firebase-init.js';
 import {
   collection,
   addDoc,
@@ -12,6 +12,7 @@ import {
   onSnapshot
 } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
 
 function createEl(tag, cls){ const e = document.createElement(tag); if(cls) e.className = cls; return e; }
 
@@ -33,11 +34,18 @@ async function uploadImageFile(file){
 }
 
 async function createPost(author, text, file){
+  // require authenticated user to create posts
+  if(!auth || !auth.currentUser){
+    alert('Bạn phải đăng nhập để đăng bài.');
+    throw new Error('not-authenticated');
+  }
   try{
     let imageURL = null;
     if(file) imageURL = await uploadImageFile(file);
+    const authorName = (auth.currentUser.displayName) ? auth.currentUser.displayName : (author || 'Khách');
     const docRef = await addDoc(collection(db, 'posts'), {
-      author: author || 'Khách',
+      author: authorName,
+      authorUid: auth.currentUser.uid,
       text: text || '',
       imageURL: imageURL || null,
       createdAt: serverTimestamp()
@@ -101,11 +109,18 @@ function renderPosts(docs){
     const form = commentsBox.querySelector('.comment-form');
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const name = form.querySelector('input[name="name"]').value || 'Khách';
+      if(!auth || !auth.currentUser){
+        alert('Bạn phải đăng nhập để bình luận.');
+        return;
+      }
+      const name = auth.currentUser.displayName || form.querySelector('input[name="name"]').value || 'Khách';
       const text = form.querySelector('textarea[name="text"]').value || '';
       if(!text.trim()) return;
       await addDoc(collection(db, 'posts', id, 'comments'), {
-        name, text, createdAt: serverTimestamp()
+        name,
+        uid: auth.currentUser.uid,
+        text,
+        createdAt: serverTimestamp()
       });
       form.querySelector('textarea[name="text"]').value = '';
     });
@@ -152,8 +167,35 @@ function hookComposer(){
     if(!text && !fileInput.files.length) return;
     const author = authorName.value.trim() || 'Khách';
     const file = fileInput.files[0] || null;
-    await createPost(author, text, file);
-    postText.value = ''; fileInput.value = '';
+    try{
+      await createPost(author, text, file);
+      postText.value = ''; fileInput.value = '';
+    }catch(e){
+      // createPost already alerts; no further action
+    }
+  });
+
+  // update composer UI depending on auth state
+  function updateComposerUI(user){
+    const loginHint = composer.querySelector('.login-hint');
+    if(!loginHint){
+      const el = document.createElement('div'); el.className='login-hint'; el.style.marginTop='8px';
+      el.innerHTML = '<em>Vui lòng đăng nhập để đăng bài hoặc bình luận.</em>'; composer.appendChild(el);
+    }
+    if(user){
+      composer.querySelector('.login-hint').style.display='none';
+      postBtn.disabled = false;
+      if(user.displayName) authorName.value = user.displayName;
+    } else {
+      composer.querySelector('.login-hint').style.display='block';
+      postBtn.disabled = true;
+      authorName.value = '';
+    }
+  }
+
+  // listen auth state
+  onAuthStateChanged(auth, (user)=>{
+    updateComposerUI(user);
   });
 }
 

@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function render(){
     const posts = loadPosts();
+    if(!feedEl) return; // nothing to render on pages without a feed
     feedEl.innerHTML = '';
     if(posts.length === 0){
       feedEl.innerHTML = '<div class="card"><p style="color:var(--muted)">Chưa có bài viết nào. Hãy đăng bài đầu tiên!</p></div>';
@@ -101,20 +102,22 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  // Hook up composer
-  postBtn.addEventListener('click', function(){
-    const text = (postText.value || '').trim();
-    const author = (authorName.value || 'Khách').trim();
-    if(!text) return;
-    const all = loadPosts();
-    const now = new Date();
-    const id = 'p_' + Date.now();
-    const entry = {id, author, text, time: now.toLocaleString(), comments: []};
-    all.unshift(entry);
-    savePosts(all);
-    postText.value = '';
-    render();
-  });
+  // Hook up composer (only if composer elements exist on the page)
+  if(postBtn){
+    postBtn.addEventListener('click', function(){
+      const text = ((postText && postText.value) || '').trim();
+      const author = ((authorName && authorName.value) || 'Khách').trim();
+      if(!text) return;
+      const all = loadPosts();
+      const now = new Date();
+      const id = 'p_' + Date.now();
+      const entry = {id, author, text, time: now.toLocaleString(), comments: []};
+      all.unshift(entry);
+      savePosts(all);
+      if(postText) postText.value = '';
+      render();
+    });
+  }
 
   // initial render
   render();

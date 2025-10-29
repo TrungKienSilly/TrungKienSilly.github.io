@@ -1,4 +1,4 @@
-# FC Online VN — Blog trao đổi (tĩnh)
+# Only Use Tricks — Blog trao đổi
 
 Đây là một blog tĩnh nhỏ để trao đổi chủ đề về game FC Online. Trang được thiết kế để chạy trên GitHub Pages.
 

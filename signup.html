@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Đăng ký — Only Use Tricks</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .auth-page{max-width:720px;margin:36px auto;padding:20px}
+    .auth-card{background:var(--card);padding:20px;border-radius:8px;box-shadow:var(--shadow)}
+    .auth-card h2{margin-top:0}
+    .error{color:#c62828;margin-top:8px}
+  </style>
+</head>
+<body>
+    <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">Only Use Tricks</h1>
+  <nav class="site-nav"><a href="index.html">Trang chủ</a> <a href="login.html">Đăng nhập</a></nav>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h2>Đăng ký</h2>
+      <form id="signupForm">
+        <label>Họ tên (tùy chọn)<br><input id="signupName" type="text" /></label>
+        <label>Email<br><input id="signupEmail" type="email" required></label>
+        <label>Mật khẩu (ít nhất 6 ký tự)<br><input id="signupPassword" type="password" required minlength="6"></label>
+        <div style="margin-top:8px"><button id="signupBtn" type="submit">Tạo tài khoản</button></div>
+      </form>
+      <div class="error" id="signupError"></div>
+  <p style="margin-top:12px">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+    </div>
+  </main>
+
+  <script type="module" src="assets/auth-ui.js"></script>
+</body>
+</html>

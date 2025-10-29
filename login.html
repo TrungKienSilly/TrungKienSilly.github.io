@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Đăng nhập — Only Use Tricks</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .auth-page{max-width:720px;margin:36px auto;padding:20px}
+    .auth-card{background:var(--card);padding:20px;border-radius:8px;box-shadow:var(--shadow)}
+    .auth-card h2{margin-top:0}
+    .auth-actions{display:flex;gap:8px;align-items:center}
+    .error{color:#c62828;margin-top:8px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">Only Use Tricks</h1>
+  <nav class="site-nav"><a href="index.html">Trang chủ</a> <a href="signup.html">Đăng ký</a></nav>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h2>Đăng nhập</h2>
+      <form id="loginForm">
+        <label>Email<br><input id="loginEmail" type="email" required></label>
+        <label>Mật khẩu<br><input id="loginPassword" type="password" required></label>
+        <div class="auth-actions">
+          <button id="loginBtn" type="submit">Đăng nhập</button>
+          <button id="fbLoginBtn" type="button">Đăng nhập bằng Facebook</button>
+        </div>
+      </form>
+      <div class="error" id="loginError"></div>
+  <p style="margin-top:12px">Chưa có tài khoản? <a href="signup.html">Đăng ký</a></p>
+    </div>
+  </main>
+
+  <script type="module" src="assets/auth-ui.js"></script>
+</body>
+</html>
