@@ -1,65 +1,139 @@
-// Simple client-side comment system stored in localStorage per post.
+// Client-side posts + comments system using localStorage.
+// - Posts stored under key 'feed_posts' as array of {id, author, text, time, comments:[]}
+// - Each comment: {name, text, time}
+
 document.addEventListener('DOMContentLoaded', function(){
-  const commentsRoot = document.getElementById('comments');
-  if(!commentsRoot) return; // nothing to do on pages without comments
+  const feedEl = document.getElementById('feed');
+  const postBtn = document.getElementById('postBtn');
+  const postText = document.getElementById('postText');
+  const authorName = document.getElementById('authorName');
 
-  const slug = commentsRoot.dataset.postSlug || 'default';
-  const storageKey = 'comments_' + slug;
+  const POSTS_KEY = 'feed_posts_v1';
 
-  function loadComments(){
-    try{
-      const raw = localStorage.getItem(storageKey);
-      return raw ? JSON.parse(raw) : [];
-    }catch(e){ return [] }
+  function loadPosts(){
+    try{ return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]') }catch(e){ return [] }
   }
-
-  function saveComments(list){
-    try{ localStorage.setItem(storageKey, JSON.stringify(list)) }catch(e){ console.error(e) }
-  }
+  function savePosts(list){ try{ localStorage.setItem(POSTS_KEY, JSON.stringify(list)) }catch(e){ console.error(e) } }
 
   function escapeHtml(s){
-    return s.replace(/[&<>"']/g, function(c){
+    return String(s).replace(/[&<>"']/g, function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];
     });
   }
 
   function render(){
-    const list = loadComments();
-    const ul = commentsRoot.querySelector('.comment-list');
-    ul.innerHTML = '';
-    if(list.length === 0){
-      ul.innerHTML = '<p style="color:var(--muted)">Chưa có bình luận nào. Hãy là người đầu tiên!</p>';
+    const posts = loadPosts();
+    feedEl.innerHTML = '';
+    if(posts.length === 0){
+      feedEl.innerHTML = '<div class="card"><p style="color:var(--muted)">Chưa có bài viết nào. Hãy đăng bài đầu tiên!</p></div>';
       return;
     }
-    list.forEach(c => {
-      const li = document.createElement('li');
-      li.className = 'comment';
-      li.innerHTML = '<div class="who">'+ escapeHtml(c.name) +'</div>'
-        +'<div class="when">'+ escapeHtml(c.time) +'</div>'
-        +'<div class="text">'+ escapeHtml(c.text) +'</div>';
-      ul.appendChild(li);
+    posts.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.dataset.postId = p.id;
+      card.innerHTML = '<div class="post-header">'
+        +'<div class="avatar">'+ escapeHtml((p.author||'A').charAt(0).toUpperCase()) +'</div>'
+        +'<div class="post-meta"><strong>'+ escapeHtml(p.author || 'Khách') +'</strong><div class="when" style="color:var(--muted);font-size:0.85rem">'+ escapeHtml(p.time) +'</div></div>'
+        +'</div>'
+        +'<div class="post-body">'+ escapeHtml(p.text).replace(/\n/g,'<br>') +'</div>'
+        +'<div class="post-actions">'
+          +'<button data-action="toggle-comments">Bình luận ('+ (p.comments? p.comments.length:0) +')</button>'
+        +'</div>'
+        +'<div class="post-comments" style="margin-top:10px;display:none">'
+          +'<ul class="comment-list"></ul>'
+          +'<form class="comment-form">'
+            +'<input name="name" placeholder="Tên (hoặc để trống)" />'
+            +'<textarea name="text" rows="2" placeholder="Viết bình luận..."></textarea>'
+            +'<button type="submit">Gửi</button>'
+          +'</form>'
+        +'</div>';
+
+      feedEl.appendChild(card);
+
+      // render comments inside
+      const commentsContainer = card.querySelector('.post-comments');
+      const commentList = commentsContainer.querySelector('.comment-list');
+      const form = commentsContainer.querySelector('.comment-form');
+      const nameIn = form.querySelector('input[name="name"]');
+      const textIn = form.querySelector('textarea[name="text"]');
+
+      function renderComments(){
+        commentList.innerHTML = '';
+        const arr = p.comments || [];
+        if(arr.length === 0){
+          commentList.innerHTML = '<p style="color:var(--muted)">Chưa có bình luận.</p>';
+          return;
+        }
+        arr.forEach(c => {
+          const li = document.createElement('li');
+          li.className = 'comment';
+          li.innerHTML = '<div class="who">'+ escapeHtml(c.name||'Khách') +'</div>'
+            +'<div class="when">'+ escapeHtml(c.time) +'</div>'
+            +'<div class="text">'+ escapeHtml(c.text) +'</div>';
+          commentList.appendChild(li);
+        });
+      }
+      renderComments();
+
+      // actions
+      card.querySelector('[data-action="toggle-comments"]').addEventListener('click', function(){
+        const visible = commentsContainer.style.display !== 'none';
+        commentsContainer.style.display = visible ? 'none' : 'block';
+      });
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = (nameIn.value || 'Khách').trim();
+        const text = (textIn.value || '').trim();
+        if(!text) return;
+        const now = new Date();
+        const entry = {name, text, time: now.toLocaleString()};
+        p.comments = p.comments || [];
+        p.comments.push(entry);
+        // save globally
+        const all = loadPosts();
+        const idx = all.findIndex(x => x.id === p.id);
+        if(idx !== -1){ all[idx] = p; savePosts(all); }
+        nameIn.value = name; textIn.value = '';
+        render();
+      });
     });
   }
 
-  // wire form
-  const form = commentsRoot.querySelector('.comment-form');
-  const nameIn = commentsRoot.querySelector('input[name="name"]');
-  const textIn = commentsRoot.querySelector('textarea[name="text"]');
-  const ul = commentsRoot.querySelector('.comment-list');
-
-  render();
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = (nameIn.value || 'Khách').trim();
-    const text = (textIn.value || '').trim();
+  // Hook up composer
+  postBtn.addEventListener('click', function(){
+    const text = (postText.value || '').trim();
+    const author = (authorName.value || 'Khách').trim();
     if(!text) return;
-    const list = loadComments();
+    const all = loadPosts();
     const now = new Date();
-    const entry = {name, text, time: now.toLocaleString()};
-    list.unshift(entry);
-    saveComments(list);
-    nameIn.value = name; textIn.value = '';
+    const id = 'p_' + Date.now();
+    const entry = {id, author, text, time: now.toLocaleString(), comments: []};
+    all.unshift(entry);
+    savePosts(all);
+    postText.value = '';
     render();
   });
+
+  // initial render
+  render();
+
+  // Optional: pre-seed with the sample post if feed empty
+  (function seed(){
+    const all = loadPosts();
+    if(all.length === 0){
+      const now = new Date();
+      const sample = {
+        id: 'sample_post1',
+        author: 'Admin',
+        text: 'Hướng dẫn bắt đầu cho tân thủ FC Online — xem bài đầy đủ ở Posts.',
+        time: now.toLocaleString(),
+        comments: []
+      };
+      all.push(sample);
+      savePosts(all);
+      render();
+    }
+  })();
 });

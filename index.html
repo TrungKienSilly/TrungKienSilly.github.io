@@ -23,14 +23,34 @@
             <p>Diễn đàn nhỏ cho game thủ FC Online: chiến thuật, đội hình, sự kiện và trao đổi chung.</p>
         </section>
 
-        <section class="posts">
-            <h3>Bài mới nhất</h3>
-            <article class="post">
-                <h4><a href="posts/post1.html">Hướng dẫn bắt đầu cho tân thủ FC Online</a></h4>
-                <p class="meta">By Admin · 29/10/2025</p>
-                <p>Những bước cơ bản để bắt đầu, mẹo chọn đội hình và những điều nên biết...</p>
-                <a class="read-more" href="posts/post1.html">Đọc tiếp →</a>
-            </article>
+        <section class="feed-area">
+            <div class="feed-left">
+                <!-- Composer (post creation) -->
+                <div class="composer card">
+                    <div class="composer-top">
+                        <div class="avatar">A</div>
+                        <div class="composer-inputs">
+                            <input id="authorName" type="text" placeholder="Tên của bạn (ví dụ: Kien)" />
+                            <textarea id="postText" rows="3" placeholder="Bạn đang nghĩ gì về FC Online?"></textarea>
+                        </div>
+                    </div>
+                    <div class="composer-actions">
+                        <button id="postBtn">Đăng</button>
+                    </div>
+                </div>
+
+                <!-- Feed list -->
+                <div id="feed" class="feed-list">
+                    <!-- Các bài sẽ được render bởi JS -->
+                </div>
+            </div>
+
+            <aside class="feed-right">
+                <div class="card">
+                    <h4>Bài mẫu</h4>
+                    <p><a href="posts/post1.html">Hướng dẫn bắt đầu cho tân thủ FC Online</a></p>
+                </div>
+            </aside>
         </section>
 
         <section class="about">
