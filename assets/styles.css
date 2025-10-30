@@ -1,75 +1,92 @@
-/* Theme updated to a light, Facebook-like palette */
+/* Football-themed stylesheet */
 :root{
-  --bg: #f0f2f5;           /* page background (facebook-like) */
-  --card: #ffffff;         /* card / post background */
-  --muted: #606770;        /* muted text */
-  --accent: #1877f2;       /* Facebook blue */
-  --accent-2:#ffb86b;
-  --text: #050505;         /* primary text color */
-  --shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 8px rgba(3,18,26,0.04);
+  --grass-1: #0b6b2b; /* deep grass */
+  --grass-2: #1da84a; /* bright green */
+  --accent: #ffd400; /* yellow (kit) */
+  --text: #0b1b12;
+  --card: #ffffff;
+  --muted: #6b6f6a;
+  --shadow: 0 6px 18px rgba(11,27,18,0.12);
 }
+
 *{box-sizing:border-box}
-.html,body{height:100%}
+html,body{height:100%}
 body{
   margin:0;
-  font-family: "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(180deg, #e9f7ec 0%, #f7fbf8 100%);
+  color:var(--text);
   line-height:1.5;
 }
-.container{max-width:960px;margin:0 auto;padding:20px}
-.site-header{background:var(--accent);border-bottom:1px solid rgba(0,0,0,0.08)}
-.site-header .container{display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
-.logo{margin:0;font-size:1.25rem;color:#fff;font-weight:700}
-.main-nav a{color:rgba(255,255,255,0.9);text-decoration:none;margin-left:16px}
-.main-nav a:hover{text-decoration:underline}
-.hero{background:var(--card);padding:28px;border-radius:8px;margin:20px 0;box-shadow:var(--shadow)}
-.hero h2{margin:0 0 6px;font-size:1.5rem}
-.posts h3,.about h3{margin-top:28px}
-.post{background:var(--card);padding:16px;border-radius:8px;margin-top:12px;border:1px solid rgba(0,0,0,0.06);box-shadow:var(--shadow)}
-.post h4{margin:0 0 6px}
-.post .meta{color:var(--muted);font-size:0.9rem;margin-bottom:8px}
-.read-more{display:inline-block;margin-top:10px;color:var(--accent);text-decoration:none}
-.site-footer{border-top:1px solid rgba(0,0,0,0.06);margin-top:40px;padding:18px 0;text-align:center;color:var(--muted);background:transparent}
 
-/* Post page comment area */
-.comments{margin-top:22px}
-.comments h4{margin:0 0 8px}
-.comment-list{list-style:none;padding:0;margin:0 0 12px}
-.comment{background:#f5f6f7;padding:10px;border-radius:6px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.04)}
-.comment .who{font-weight:600;font-size:0.95rem;color:var(--text)}
-.comment .when{font-size:0.8rem;color:var(--muted)}
-.comment-form{display:grid;gap:8px}
-.comment-form input,.comment-form textarea{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.08);background:#fff;color:var(--text)}
-.comment-form button{justify-self:flex-start;padding:8px 12px;border-radius:6px;border:none;background:var(--accent);color:white;cursor:pointer}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+
+/* Header: stadium stripe and club feel */
+.site-header{
+  background: linear-gradient(90deg, rgba(11,107,43,1) 0%, rgba(29,168,74,1) 100%);
+  border-bottom:4px solid rgba(11,27,18,0.14);
+  box-shadow: 0 4px 10px rgba(11,27,18,0.12);
+}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo{margin:0;font-size:1.3rem;color:var(--accent);font-weight:800;text-shadow:0 1px 0 rgba(0,0,0,0.25)}
+.main-nav a{color:rgba(255,255,255,0.95);text-decoration:none;margin-left:18px;font-weight:600}
+.main-nav a:hover{text-decoration:underline}
+
+/* user area right aligned */
+#userArea{display:inline-flex;align-items:center;gap:8px}
+#userArea img{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,0.85)}
+#userArea button{background:transparent;border:1px solid rgba(255,255,255,0.18);color:white;padding:6px 8px;border-radius:6px;cursor:pointer}
+
+/* Hero */
+.hero{background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9));padding:28px;border-radius:10px;margin:22px 0;box-shadow:var(--shadow);border-left:6px solid var(--grass-1)}
+.hero h2{margin:0 0 8px;font-size:1.6rem}
+.hero p{color:var(--muted)}
+
+/* Cards and feed */
+.card{background:var(--card);padding:14px;border-radius:12px;margin-bottom:14px;border:1px solid rgba(11,27,18,0.04);box-shadow:var(--shadow)}
+.feed-area{display:flex;gap:22px;margin-top:18px}
+.feed-left{flex:1}
+.feed-right{width:300px}
+
+.composer{display:block}
+.composer .avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,var(--grass-1),var(--grass-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 2px 8px rgba(11,27,18,0.18)}
+.composer-inputs input,.composer-inputs textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(11,27,18,0.06);background:#fbfffb}
+.composer-actions{display:flex;justify-content:flex-end;margin-top:10px}
+.composer-actions button{background:var(--grass-1);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+
+.feed-list .post-card{background:linear-gradient(180deg,#fff,#fcfff8);padding:14px;border-radius:12px;margin-bottom:14px;border-left:6px solid rgba(29,168,74,0.16);box-shadow:var(--shadow)}
+.post-header{display:flex;gap:12px;align-items:center}
+.post-header .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,var(--grass-1),var(--grass-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.post-body{margin-top:10px;color:var(--text)}
+.post-actions{display:flex;gap:12px;margin-top:12px;color:var(--muted);font-size:0.95rem}
+.post-actions button{background:transparent;border:none;color:var(--muted);cursor:pointer}
+
+/* Comments */
+.comments{margin-top:18px}
+.comment{background:#f7fcf7;padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid rgba(11,27,18,0.03)}
+.comment .who{font-weight:700}
+.comment .when{font-size:0.85rem;color:var(--muted)}
+
+.site-footer{border-top:1px solid rgba(11,27,18,0.06);margin-top:40px;padding:18px 0;text-align:center;color:var(--muted);background:transparent}
+
+/* Buttons & inputs */
+button, .btn{font-family:inherit}
+input,textarea,select{font-family:inherit}
+
+@media (max-width:900px){
+  .feed-area{flex-direction:column}
+  .feed-right{width:100%}
+}
 
 @media (max-width:600px){
   .site-header .container{flex-direction:column;align-items:flex-start}
   .main-nav a{margin-left:8px;margin-top:8px}
 }
 
-/* Feed / composer styles */
-.feed-area{display:flex;gap:20px;margin-top:18px}
-.feed-left{flex:1}
-.feed-right{width:260px}
-.card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(0,0,0,0.06);box-shadow:var(--shadow)}
-.composer{display:block}
-.composer-top{display:flex;gap:12px;align-items:flex-start}
-.composer .avatar{width:48px;height:48px;border-radius:50%;background:#e9eefb;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700}
-.composer-inputs{flex:1}
-.composer-inputs input{margin-bottom:8px;border:1px solid rgba(0,0,0,0.08);padding:8px;border-radius:6px}
-.composer-inputs textarea{resize:vertical;border:1px solid rgba(0,0,0,0.08);padding:8px;border-radius:6px}
-.composer-actions{display:flex;justify-content:flex-end;margin-top:8px}
-.composer-actions button{background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer}
+/* Small football-themed accents */
+.club-badge{display:inline-flex;align-items:center;gap:8px}
+.club-badge .crest{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 40% 30%, #fff9d6, #ffd400);display:inline-block}
 
-.feed-list .post-card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(0,0,0,0.06);box-shadow:var(--shadow)}
-.post-card .post-header{display:flex;gap:10px;align-items:center}
-.post-card .post-header .avatar{width:40px;height:40px;border-radius:50%;background:#e9eefb;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700}
-.post-card .post-body{margin-top:10px;color:var(--text)}
-.post-card .post-actions{display:flex;gap:12px;margin-top:10px;color:var(--muted);font-size:0.95rem}
-.post-card .post-actions button{background:transparent;border:none;color:var(--muted);cursor:pointer}
+/* subtle grass texture on page bottom */
+body::after{content:'';display:block;height:48px;background:linear-gradient(180deg, rgba(29,168,74,0.06), rgba(11,107,43,0.04));position:fixed;left:0;right:0;bottom:0;pointer-events:none}
 
-@media (max-width:900px){
-  .feed-area{flex-direction:column}
-  .feed-right{width:100%}
-}

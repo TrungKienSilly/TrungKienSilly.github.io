@@ -92,6 +92,9 @@ function renderUserArea(user){
   const el = document.getElementById('userArea');
   if(!el) return;
   el.innerHTML = '';
+  // toggle header login/signup links if present
+  const loginLinks = document.querySelectorAll('.main-nav a[href="login.html"], .site-nav a[href="login.html"], .main-nav a[href="/login.html"], .site-nav a[href="/login.html"]');
+  const signupLinks = document.querySelectorAll('.main-nav a[href="signup.html"], .site-nav a[href="signup.html"], .main-nav a[href="/signup.html"], .site-nav a[href="/signup.html"]');
   if(user){
     // avatar (photoURL) or initial
     if(user.photoURL){
@@ -115,8 +118,12 @@ function renderUserArea(user){
     outBtn.addEventListener('click', handleSignOut);
     el.appendChild(outBtn);
   } else {
-    el.innerHTML = '<a href="login.html">Đăng nhập</a>';
+    // don't duplicate a login link here; nav already contains login/signup links
+    el.innerHTML = '';
   }
+  // show/hide the login & signup links in nav
+  loginLinks.forEach(a => a.style.display = user ? 'none' : '');
+  signupLinks.forEach(a => a.style.display = user ? 'none' : '');
 }
 
 // show basic auth state and wire up forms
