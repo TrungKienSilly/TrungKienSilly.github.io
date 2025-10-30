@@ -17,6 +17,7 @@
     <div class="container">
       <h1 class="site-title">Only Use Tricks</h1>
   <nav class="site-nav"><a href="index.html">Trang chủ</a> <a href="login.html">Đăng nhập</a></nav>
+      <div id="userArea" style="display:inline-block;margin-left:12px;vertical-align:middle"></div>
     </div>
   </header>
 
@@ -28,6 +29,9 @@
         <label>Email<br><input id="signupEmail" type="email" required></label>
         <label>Mật khẩu (ít nhất 6 ký tự)<br><input id="signupPassword" type="password" required minlength="6"></label>
         <div style="margin-top:8px"><button id="signupBtn" type="submit">Tạo tài khoản</button></div>
+        <div style="margin-top:8px">
+          <button id="googleLoginBtn" type="button">Đăng ký/Đăng nhập bằng Google</button>
+        </div>
       </form>
       <div class="error" id="signupError"></div>
   <p style="margin-top:12px">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
