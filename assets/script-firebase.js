@@ -9,10 +9,15 @@ import {
   serverTimestamp,
   query,
   orderBy,
-  onSnapshot
+  onSnapshot,
+  getDocs,
+  limit
 } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+
+// quick runtime indicator
+console.log('script-firebase.js loaded');
 
 function createEl(tag, cls){ const e = document.createElement(tag); if(cls) e.className = cls; return e; }
 
@@ -43,9 +48,11 @@ async function createPost(author, text, file){
     let imageURL = null;
     if(file) imageURL = await uploadImageFile(file);
     const authorName = (auth.currentUser.displayName) ? auth.currentUser.displayName : (author || 'Khách');
+    const authorPhoto = auth.currentUser.photoURL || null;
     const docRef = await addDoc(collection(db, 'posts'), {
       author: authorName,
       authorUid: auth.currentUser.uid,
+      authorPhoto: authorPhoto,
       text: text || '',
       imageURL: imageURL || null,
       createdAt: serverTimestamp()
@@ -74,7 +81,18 @@ function renderPosts(docs){
     const id = docSnap.id;
     const card = createEl('div','post-card');
     const header = createEl('div','post-header');
-    const avatar = createEl('div','avatar'); avatar.textContent = (p.author||'A').charAt(0).toUpperCase();
+    // author avatar: image if available, otherwise initial
+    let avatar;
+    if(p.authorPhoto){
+      avatar = createEl('div','avatar');
+      const img = document.createElement('img');
+      img.src = p.authorPhoto;
+      img.alt = p.author || 'avatar';
+      img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover'; img.style.borderRadius = '50%';
+      avatar.appendChild(img);
+    } else {
+      avatar = createEl('div','avatar'); avatar.textContent = (p.author||'A').charAt(0).toUpperCase();
+    }
     const meta = createEl('div','post-meta');
     meta.innerHTML = `<strong>${p.author||'Khách'}</strong><div class="when" style="color:var(--muted);font-size:0.85rem">${p.createdAt ? new Date(p.createdAt.seconds*1000).toLocaleString() : ''}</div>`;
     header.appendChild(avatar); header.appendChild(meta);
@@ -89,14 +107,29 @@ function renderPosts(docs){
     actions.appendChild(btnToggle);
     card.appendChild(actions);
 
-    const commentsBox = createEl('div','post-comments'); commentsBox.style.display='none';
+    const commentsBox = createEl('div','post-comments'); commentsBox.style.display='block';
+    // Comment form: we don't allow editing name — use signed-in user's displayName
     commentsBox.innerHTML = `<ul class="comment-list"></ul>
       <form class="comment-form">
-        <input name="name" placeholder="Tên (hoặc để trống)"/>
         <textarea name="text" rows="2" placeholder="Viết bình luận..."></textarea>
         <button type="submit">Gửi</button>
       </form>`;
     card.appendChild(commentsBox);
+
+    // show 2 newest comments preview immediately; add "Xem thêm" if more exist
+    const ul = commentsBox.querySelector('.comment-list');
+    const showMoreBtn = createEl('button','show-more-comments');
+    showMoreBtn.textContent = 'Xem thêm bình luận';
+    showMoreBtn.style.marginTop = '8px';
+    showMoreBtn.style.display = 'none';
+    showMoreBtn.addEventListener('click', ()=>{
+      // attach full realtime listener and hide this button
+      startCommentsListener(id, ul);
+      showMoreBtn.style.display = 'none';
+    });
+    card.appendChild(showMoreBtn);
+    // async preview (don't await here so renderPosts stays sync)
+    loadCommentsPreview(id, ul, showMoreBtn);
 
     btnToggle.addEventListener('click', ()=>{
       commentsBox.style.display = commentsBox.style.display === 'none' ? 'block' : 'none';
@@ -113,13 +146,14 @@ function renderPosts(docs){
         alert('Bạn phải đăng nhập để bình luận.');
         return;
       }
-      const name = auth.currentUser.displayName || form.querySelector('input[name="name"]').value || 'Khách';
+      const name = auth.currentUser.displayName || 'Khách';
       const text = form.querySelector('textarea[name="text"]').value || '';
       if(!text.trim()) return;
       await addDoc(collection(db, 'posts', id, 'comments'), {
         name,
         uid: auth.currentUser.uid,
         text,
+        photoURL: auth.currentUser.photoURL || null,
         createdAt: serverTimestamp()
       });
       form.querySelector('textarea[name="text"]').value = '';
@@ -130,21 +164,51 @@ function renderPosts(docs){
 }
 
 function startCommentsListener(postId, ulEl){
-  const { query: qf, orderBy: ob, collection: coll } = { query, orderBy, collection };
-  // dynamically import functions to avoid duplicate bindings (firestore functions already imported at top)
-  import('https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js').then(fs=>{
-    const q = fs.query(fs.collection(db, 'posts', postId, 'comments'), fs.orderBy('createdAt','asc'));
-    fs.onSnapshot(q, snapshot=>{
-      ulEl.innerHTML = '';
-      if(snapshot.empty){ ulEl.innerHTML = '<li style="color:var(--muted)">Chưa có bình luận.</li>'; return; }
-      snapshot.forEach(d=>{
-        const c = d.data();
-        const li = createEl('li','comment');
-        li.innerHTML = `<div class="who">${c.name||'Khách'}</div><div class="when">${c.createdAt ? new Date(c.createdAt.seconds*1000).toLocaleString() : ''}</div><div class="text">${c.text}</div>`;
-        ulEl.appendChild(li);
-      });
+  // attach realtime listener for all comments (ascending chronological)
+  ulEl.innerHTML = '';
+  const q = query(collection(db, 'posts', postId, 'comments'), orderBy('createdAt','asc'));
+  onSnapshot(q, snapshot=>{
+    ulEl.innerHTML = '';
+    if(snapshot.empty){ ulEl.innerHTML = '<li style="color:var(--muted)">Chưa có bình luận.</li>'; return; }
+    snapshot.forEach(d=>{
+      const c = d.data();
+      const li = createEl('li','comment');
+      // avatar: image if provided, otherwise initial with grass gradient
+      const avatarHtml = c.photoURL ?
+        `<div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:8px"><img src="${c.photoURL}" style="width:100%;height:100%;object-fit:cover"/></div>` :
+        `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,var(--grass-1),var(--grass-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;margin-right:8px">${(c.name||'K').charAt(0).toUpperCase()}</div>`;
+      li.innerHTML = `<div style="display:flex;gap:8px;align-items:flex-start">${avatarHtml}<div><div class=\"who\">${c.name||'Khách'}</div><div class=\"when\">${c.createdAt ? new Date(c.createdAt.seconds*1000).toLocaleString() : ''}</div><div class=\"text\" style=\"margin-top:6px\">${c.text}</div></div></div>`;
+      ulEl.appendChild(li);
     });
   });
+}
+
+// load 2 newest comments as a preview (descending) and show a "show more" button if >2
+async function loadCommentsPreview(postId, ulEl, showMoreBtn){
+  ulEl.innerHTML = '';
+  try{
+    const q = query(collection(db, 'posts', postId, 'comments'), orderBy('createdAt','desc'), limit(3));
+    const snap = await getDocs(q);
+    if(snap.empty){ ulEl.innerHTML = '<li style="color:var(--muted)">Chưa có bình luận.</li>'; if(showMoreBtn) showMoreBtn.style.display='none'; return; }
+    const docs = snap.docs;
+    const more = docs.length > 2;
+    // docs are newest-first; render up to 2 newest, preserving newest-first order
+    const toRender = docs.slice(0,2);
+    toRender.forEach(d=>{
+      const c = d.data();
+      const li = createEl('li','comment');
+      const avatarHtml = c.photoURL ?
+        `<div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:8px"><img src="${c.photoURL}" style="width:100%;height:100%;object-fit:cover"/></div>` :
+        `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,var(--grass-1),var(--grass-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;margin-right:8px">${(c.name||'K').charAt(0).toUpperCase()}</div>`;
+      li.innerHTML = `<div style="display:flex;gap:8px;align-items:flex-start">${avatarHtml}<div><div class=\"who\">${c.name||'Khách'}</div><div class=\"when\">${c.createdAt ? new Date(c.createdAt.seconds*1000).toLocaleString() : ''}</div><div class=\"text\" style=\"margin-top:6px\">${c.text}</div></div></div>`;
+      ulEl.appendChild(li);
+    });
+    if(showMoreBtn) showMoreBtn.style.display = more ? '' : 'none';
+  }catch(e){
+    console.error('loadCommentsPreview error', e);
+    ulEl.innerHTML = '<li style="color:var(--muted)">Không thể tải bình luận.</li>';
+    if(showMoreBtn) showMoreBtn.style.display='none';
+  }
 }
 
 function startFeedListener(){
@@ -161,19 +225,22 @@ function hookComposer(){
   const postText = document.getElementById('postText');
   const authorName = document.getElementById('authorName');
   const fileInput = document.createElement('input'); fileInput.type='file'; fileInput.accept='image/*'; fileInput.style.marginTop='8px';
-  composer.querySelector('.composer-actions').prepend(fileInput);
-  postBtn.addEventListener('click', async ()=>{
-    const text = postText.value.trim();
-    if(!text && !fileInput.files.length) return;
-    const author = authorName.value.trim() || 'Khách';
-    const file = fileInput.files[0] || null;
-    try{
-      await createPost(author, text, file);
-      postText.value = ''; fileInput.value = '';
-    }catch(e){
-      // createPost already alerts; no further action
-    }
-  });
+  const composerActions = composer.querySelector('.composer-actions');
+  if(composerActions) composerActions.prepend(fileInput);
+  if(postBtn){
+    postBtn.addEventListener('click', async ()=>{
+      const text = postText ? postText.value.trim() : '';
+      if(!text && !(fileInput && fileInput.files && fileInput.files.length)) return;
+      const author = authorName ? (authorName.value.trim() || 'Khách') : 'Khách';
+      const file = fileInput.files ? fileInput.files[0] : null;
+      try{
+        await createPost(author, text, file);
+        if(postText) postText.value = ''; if(fileInput) fileInput.value = '';
+      }catch(e){
+        // createPost already alerts; no further action
+      }
+    });
+  }
 
   // update composer UI depending on auth state
   function updateComposerUI(user){
@@ -183,13 +250,28 @@ function hookComposer(){
       el.innerHTML = '<em>Vui lòng đăng nhập để đăng bài hoặc bình luận.</em>'; composer.appendChild(el);
     }
     if(user){
-      composer.querySelector('.login-hint').style.display='none';
-      postBtn.disabled = false;
-      if(user.displayName) authorName.value = user.displayName;
+      const hint = composer.querySelector('.login-hint'); if(hint) hint.style.display='none';
+      if(postBtn) postBtn.disabled = false;
+      if(authorName){
+        if(user.displayName) authorName.value = user.displayName;
+        try{ authorName.readOnly = true; authorName.disabled = true; }catch(e){}
+      }
+      // show user photo in composer avatar if present
+      const cav = composer.querySelector('.avatar');
+      if(cav){
+        if(user.photoURL){
+          cav.innerHTML = '';
+          const img = document.createElement('img'); img.src = user.photoURL; img.alt = user.displayName || 'avatar';
+          img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover'; img.style.borderRadius='50%';
+          cav.appendChild(img);
+        } else {
+          cav.textContent = (user.displayName||'U').charAt(0).toUpperCase();
+        }
+      }
     } else {
-      composer.querySelector('.login-hint').style.display='block';
-      postBtn.disabled = true;
-      authorName.value = '';
+      const hint = composer.querySelector('.login-hint'); if(hint) hint.style.display='block';
+      if(postBtn) postBtn.disabled = true;
+      if(authorName){ authorName.value = ''; try{ authorName.readOnly = false; authorName.disabled = false; }catch(e){} }
     }
   }
 
@@ -202,3 +284,4 @@ function hookComposer(){
 // initialize
 startFeedListener();
 hookComposer();
+

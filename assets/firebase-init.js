@@ -26,7 +26,7 @@ export const storage = getStorage(app);
 // Optional: sign in anonymously so users can write (for dev).
 // Previously we automatically signed in anonymously for convenience during development:
 //   signInAnonymously(auth).catch((e)=>{ console.warn('Anonymous sign-in failed:', e.message); });
-// To require explicit user sign-in (Google / Email / Facebook), we disable automatic anonymous
+// To require explicit user sign-in (Google / Email), we disable automatic anonymous
 // sign-in here. If you want to re-enable for development, uncomment the line below and enable
 // Anonymous provider in Firebase Console > Authentication > Sign-in method.
 // signInAnonymously(auth).catch((e)=>{ console.warn('Anonymous sign-in failed:', e.message); });

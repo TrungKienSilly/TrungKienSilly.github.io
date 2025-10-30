@@ -7,7 +7,6 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
-  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithPopup
 } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
@@ -46,18 +45,6 @@ async function handleLogin(e){
   }catch(e){
     console.error('login failed', e);
     showError(errEl, e.message || 'Đăng nhập thất bại');
-  }
-}
-
-async function handleFbLogin(e){
-  const errEl = $('#loginError'); showError(errEl,'');
-  try{
-    const provider = new FacebookAuthProvider();
-    await signInWithPopup(auth, provider);
-    location.href = '/';
-  }catch(e){
-    console.error('fb login failed', e);
-    showError(errEl, e.message || 'Đăng nhập Facebook thất bại');
   }
 }
 
