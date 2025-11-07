@@ -67,11 +67,18 @@ function renderProjects(list){
     const meta = document.createElement('div'); meta.className = 'meta';
     (p.tags||[]).slice(0,6).forEach(t=>{ const sp = document.createElement('span'); sp.className='tag'; sp.textContent=t; meta.appendChild(sp)});
     const links = document.createElement('div'); links.className='links';
-    // Chỉ hiện "Demo" cho Warmguys, còn lại hiện "More info"
-    if(p.demo) {
-      const linkText = p.name === 'Warmguys' ? 'Demo' : 'More info';
-      links.appendChild(linkEl(linkText, p.demo));
-    }
+    
+    // More info button - opens modal
+    const moreInfoBtn = document.createElement('a');
+    moreInfoBtn.href = '#';
+    moreInfoBtn.textContent = 'More info';
+    moreInfoBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openProjectModal(p);
+    });
+    links.appendChild(moreInfoBtn);
+    
+    // Repo link
     if(p.repo) links.appendChild(linkEl('Repo',p.repo));
 
     card.appendChild(title);
@@ -140,5 +147,76 @@ lightbox.addEventListener('click', (e)=>{
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape' && lightbox.classList.contains('active')){
     closeLightbox();
+  }
+  if(e.key === 'Escape' && projectModal.classList.contains('active')){
+    closeProjectModal();
+  }
+});
+
+// ==============================
+// PROJECT MODAL FUNCTIONALITY
+// ==============================
+const projectModal = document.getElementById('projectModal');
+const modalClose = document.querySelector('.modal-close');
+const modalTitle = document.getElementById('modalTitle');
+const modalFullDesc = document.getElementById('modalFullDesc');
+const modalFeatures = document.getElementById('modalFeatures');
+const modalTech = document.getElementById('modalTech');
+const modalStatus = document.getElementById('modalStatus');
+const modalRepoLink = document.getElementById('modalRepoLink');
+const modalDemoLink = document.getElementById('modalDemoLink');
+
+function openProjectModal(project){
+  const details = project.detailedInfo || {};
+  
+  modalTitle.textContent = project.name;
+  modalFullDesc.textContent = details.fullDescription || project.description || '';
+  
+  // Features
+  modalFeatures.innerHTML = '';
+  if(details.features && details.features.length){
+    details.features.forEach(feature => {
+      const li = document.createElement('li');
+      li.textContent = feature;
+      modalFeatures.appendChild(li);
+    });
+  } else {
+    modalFeatures.innerHTML = '<li>Đang cập nhật...</li>';
+  }
+  
+  // Technologies
+  modalTech.textContent = details.technologies || 'Đang cập nhật...';
+  
+  // Status
+  modalStatus.textContent = details.status || 'Đang phát triển';
+  
+  // Links
+  if(project.repo){
+    modalRepoLink.href = project.repo;
+    modalRepoLink.style.display = 'inline-block';
+  } else {
+    modalRepoLink.style.display = 'none';
+  }
+  
+  if(project.demo){
+    modalDemoLink.href = project.demo;
+    modalDemoLink.style.display = 'inline-block';
+  } else {
+    modalDemoLink.style.display = 'none';
+  }
+  
+  projectModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal(){
+  projectModal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+modalClose.addEventListener('click', closeProjectModal);
+projectModal.addEventListener('click', (e)=>{
+  if(e.target === projectModal){
+    closeProjectModal();
   }
 });
