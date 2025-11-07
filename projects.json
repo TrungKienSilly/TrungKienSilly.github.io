@@ -1,0 +1,43 @@
+[
+  {
+    "name": "UI-Writing-TOEIC-test",
+    "description": "Giao diện web cho bài thi TOEIC Writing với SCSS styling.",
+    "tags": ["SCSS", "CSS", "UI/UX", "TOEIC"],
+    "repo": "https://github.com/TrungKienSilly/UI-Writing-TOEIC-test",
+    "demo": "writing-toeic/index.html"
+  },
+  {
+    "name": "TrungKienSilly",
+    "description": "Repository cá nhân — profile và thông tin giới thiệu bản thân.",
+    "tags": ["Profile", "GitHub"],
+    "repo": "https://github.com/TrungKienSilly/TrungKienSilly"
+  },
+  {
+    "name": "Warmguys",
+    "description": "Website quản lý phòng gym, quản lý bảo trì thiết bị và lịch tập của khách hàng.",
+    "tags": ["CSS", "HTML", "Responsive"],
+    "repo": "https://github.com/TrungKienSilly/Warmguys",
+    "demo": "warmguys/Warmguys/View/User/index.html"
+  },
+  {
+    "name": "TOEIC Speaking Test Website",
+    "description": "Website luyện thi TOEIC Speaking được xây dựng bằng TypeScript, kết hợp công nghệ azure chấm điểm bằng ai(độ lưu loát, độ chính xác).",
+    "tags": ["TypeScript", "TOEIC", "Testing", "Web App", "Azure AI"],
+    "repo": "https://github.com/TrungKienSilly/TOEIC_Speaking_Test_Website",
+    "demo": "TOEIC_Speaking_Test_Website/index.html"
+  },
+  {
+    "name": "tuyensinh",
+    "description": "Hệ thống tuyển sinh được phát triển bằng PHP, hỗ trợ học sinh vừa thi tốt nghiệp xong có thể lựa chọn trường đại học phù hợp với điểm số của mình.",
+    "tags": ["PHP", "Backend", "Database"],
+    "repo": "https://github.com/TrungKienSilly/tuyensinh",
+    "demo": "tuyensinh/index.html"
+  },
+  {
+    "name": "top1datsan",
+    "description": "Website đặt sân thể thao với HTML và các tính năng đặt lịch, theo mô hình B2B, cho phép công ty, doanh nghiệp hoặc đội bóng đặt sân tập luyện...",
+    "tags": ["HTML", "CSS", "JavaScript", "Booking"],
+    "repo": "https://github.com/TrungKienSilly/top1datsan",
+    "demo": "top1datsan/index.html"
+  }
+]

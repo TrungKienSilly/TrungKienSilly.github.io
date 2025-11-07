@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Trung Kien Silly — Projects</title>
+  <meta name="description" content="Danh mục các dự án của Trung Kiên">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="icon-sun">☀️</span>
+    <span class="icon-moon">🌙</span>
+  </button>
+  
+  <!-- Hero Cover Section -->
+  <section class="hero-cover">
+    <div class="hero-overlay"></div>
+    <div class="controls-top">
+      <input id="search" placeholder="Tìm theo tên hoặc mô tả..." aria-label="search">
+      <select id="tagFilter">
+        <option value="">Tất cả tags</option>
+      </select>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">Trung Kien Silly</h1>
+      <p class="hero-subtitle">Developer & Creator</p>
+      <p class="hero-description">All my projects are here!</p>
+    </div>
+  </section>
+
+  <header class="site-header">
+    <div class="container">
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="projects" class="projects-grid" aria-live="polite">
+      <!-- cards injected here -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Trung Kiên — <a href="https://github.com/trungkiensilly" target="_blank" rel="noopener">GitHub</a></p>
+      <div class="footer-image">
+        <img src="img/tiktok.jpg" alt="TikTok" />
+        <img src="img/ins1.jpg" alt="Instagram 1" />
+        <img src="img/ins2.jpg" alt="Instagram 2" />
+      </div>
+    </div>
+  </footer>
+
+  <!-- Social Chat Bubble -->
+  <div class="social-bubble-container">
+    <button id="socialToggle" class="social-bubble" aria-label="Social links">
+      💬
+    </button>
+    <div id="socialMenu" class="social-menu">
+      <a href="https://www.instagram.com/trungkien_onthego" target="_blank" rel="noopener" class="social-link instagram">
+        <span class="icon">📷</span>
+        <span class="label">Instagram</span>
+      </a>
+      <a href="mailto:kiennguyen300803@gmail.com" class="social-link gmail">
+        <span class="icon">📧</span>
+        <span class="label">Gmail</span>
+      </a>
+      <a href="https://www.tiktok.com/@xucxichdog" target="_blank" rel="noopener" class="social-link tiktok">
+        <span class="icon">🎵</span>
+        <span class="label">TikTok</span>
+      </a>
+      <a href="https://www.facebook.com/nguoicodonnhatthegioinayluon" target="_blank" rel="noopener" class="social-link facebook">
+        <span class="icon">👤</span>
+        <span class="label">Facebook</span>
+      </a>
+      <a href="https://www.linkedin.com/in/trungkiensilly" target="_blank" rel="noopener" class="social-link linkedin">
+        <span class="icon">💼</span>
+        <span class="label">LinkedIn</span>
+      </a>
+      <a href="https://huggingface.co/trungkiensilly" target="_blank" rel="noopener" class="social-link huggingface">
+        <span class="icon">🤗</span>
+        <span class="label">Hugging Face</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="imageLightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightboxImg" alt="Enlarged image">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

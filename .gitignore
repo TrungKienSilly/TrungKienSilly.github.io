@@ -1,0 +1,16 @@
+# Ignore local project folders that should not be published
+tuyensinh/
+warmguys/
+writing-toeic/
+TOEIC_Speaking_Test_Website/
+top1datsan/
+
+# Node modules and build artifacts (if any subprojects use Node)
+node_modules/
+dist/
+build/
+
+# IDE / OS files
+.DS_Store
+Thumbs.db
+/.vscode/
