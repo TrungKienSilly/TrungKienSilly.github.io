@@ -13,8 +13,8 @@ const translations = {
     allTags: 'Tất cả tags',
     
     // Articles page
-    articlesPageTitle: '📝 Bài viết của tôi',
-    articlesPageSubtitle: 'Chia sẻ kiến thức, kinh nghiệm và những bài học trong lập trình',
+    articlesPageTitle: ' Bài viết và tin tức',
+    articlesPageSubtitle: 'Nơi chia sẻ kiến thức, kinh nghiệm và trải nghiệm',
     searchArticlesPlaceholder: 'Tìm kiếm bài viết...',
     allCategories: 'Tất cả chủ đề',
     loadingArticles: 'Đang tải bài viết...',
