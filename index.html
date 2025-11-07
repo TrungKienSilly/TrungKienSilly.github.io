@@ -89,6 +89,40 @@
     <span class="lightbox-close">&times;</span>
     <img class="lightbox-content" id="lightboxImg" alt="Enlarged image">
   </div>
+
+  <!-- Project Info Modal -->
+  <div id="projectModal" class="project-modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2 id="modalTitle" class="modal-title"></h2>
+      <p id="modalFullDesc" class="modal-full-description"></p>
+      
+      <div class="modal-section">
+        <h3>✨ Tính năng chính</h3>
+        <ul id="modalFeatures" class="modal-features-list"></ul>
+      </div>
+      
+      <div class="modal-section">
+        <h3>🛠️ Công nghệ sử dụng</h3>
+        <p id="modalTech" class="modal-tech"></p>
+      </div>
+      
+      <div class="modal-section">
+        <h3>📊 Trạng thái</h3>
+        <p id="modalStatus" class="modal-status"></p>
+      </div>
+      
+      <div class="modal-buttons">
+        <a id="modalRepoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-primary">
+          📦 Xem Repository
+        </a>
+        <a id="modalDemoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-secondary" style="display: none;">
+          🚀 Xem Demo
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
