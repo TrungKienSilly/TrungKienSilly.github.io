@@ -284,6 +284,77 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
   transform: translateY(-2px);
 }
 
+/* Rating Section */
+.rating-container {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 0.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.star {
+  color: #ddd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.star:hover,
+.star.active {
+  color: #ffd700;
+  transform: scale(1.2);
+}
+
+.star.hovered {
+  color: #ffd700;
+}
+
+.rating-text {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+#currentRating {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+#totalReviews {
+  color: var(--muted);
+}
+
+/* Feedback animations */
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+}
+
 /* Mobile responsive for modal */
 @media (max-width: 768px) {
   .modal-content {

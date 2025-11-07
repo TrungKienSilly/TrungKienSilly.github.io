@@ -165,8 +165,14 @@ const modalTech = document.getElementById('modalTech');
 const modalStatus = document.getElementById('modalStatus');
 const modalRepoLink = document.getElementById('modalRepoLink');
 const modalDemoLink = document.getElementById('modalDemoLink');
+const ratingStars = document.getElementById('ratingStars');
+const currentRatingEl = document.getElementById('currentRating');
+const totalReviewsEl = document.getElementById('totalReviews');
+
+let currentProject = null;
 
 function openProjectModal(project){
+  currentProject = project;
   const details = project.detailedInfo || {};
   
   modalTitle.textContent = project.name;
@@ -190,6 +196,12 @@ function openProjectModal(project){
   // Status
   modalStatus.textContent = details.status || 'Đang phát triển';
   
+  // Rating
+  const rating = details.rating || { average: 0, total: 0 };
+  currentRatingEl.textContent = rating.average.toFixed(1);
+  totalReviewsEl.textContent = rating.total;
+  updateStarsDisplay(rating.average);
+  
   // Links
   if(project.repo){
     modalRepoLink.href = project.repo;
@@ -208,6 +220,97 @@ function openProjectModal(project){
   
   projectModal.classList.add('active');
   document.body.style.overflow = 'hidden';
+}
+
+function updateStarsDisplay(rating){
+  const stars = ratingStars.querySelectorAll('.star');
+  const fullStars = Math.floor(rating);
+  stars.forEach((star, index) => {
+    if(index < fullStars){
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+// Star rating interaction
+ratingStars.addEventListener('mouseover', (e)=>{
+  if(e.target.classList.contains('star')){
+    const value = parseInt(e.target.dataset.value);
+    const stars = ratingStars.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+      if(index < value){
+        star.classList.add('hovered');
+      } else {
+        star.classList.remove('hovered');
+      }
+    });
+  }
+});
+
+ratingStars.addEventListener('mouseout', ()=>{
+  const stars = ratingStars.querySelectorAll('.star');
+  stars.forEach(star => star.classList.remove('hovered'));
+});
+
+ratingStars.addEventListener('click', (e)=>{
+  if(e.target.classList.contains('star') && currentProject){
+    const value = parseInt(e.target.dataset.value);
+    submitRating(currentProject, value);
+  }
+});
+
+function submitRating(project, rating){
+  // Get existing ratings from localStorage
+  const ratings = JSON.parse(localStorage.getItem('projectRatings') || '{}');
+  const projectKey = project.name.replace(/\s+/g, '_');
+  
+  if(!ratings[projectKey]){
+    ratings[projectKey] = [];
+  }
+  
+  ratings[projectKey].push(rating);
+  localStorage.setItem('projectRatings', JSON.stringify(ratings));
+  
+  // Calculate new average
+  const allRatings = ratings[projectKey];
+  const average = allRatings.reduce((a,b)=>a+b, 0) / allRatings.length;
+  const total = allRatings.length;
+  
+  // Update display
+  currentRatingEl.textContent = average.toFixed(1);
+  totalReviewsEl.textContent = total;
+  updateStarsDisplay(average);
+  
+  // Update project data
+  if(!project.detailedInfo) project.detailedInfo = {};
+  if(!project.detailedInfo.rating) project.detailedInfo.rating = {};
+  project.detailedInfo.rating.average = average;
+  project.detailedInfo.rating.total = total;
+  
+  // Show feedback
+  showRatingFeedback(rating);
+}
+
+function showRatingFeedback(rating){
+  const messages = {
+    1: 'Cảm ơn phản hồi! Tôi sẽ cố gắng cải thiện.',
+    2: 'Cảm ơn! Tôi sẽ làm tốt hơn.',
+    3: 'Cảm ơn đánh giá của bạn!',
+    4: 'Rất vui vì bạn thích dự án này!',
+    5: 'Tuyệt vời! Cảm ơn bạn rất nhiều! ⭐'
+  };
+  
+  const feedback = document.createElement('div');
+  feedback.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:1rem 2rem;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:99999;animation:slideDown 0.3s ease;';
+  feedback.textContent = messages[rating] || 'Cảm ơn đánh giá!';
+  document.body.appendChild(feedback);
+  
+  setTimeout(()=>{
+    feedback.style.animation = 'slideUp 0.3s ease';
+    setTimeout(()=> feedback.remove(), 300);
+  }, 2000);
 }
 
 function closeProjectModal(){

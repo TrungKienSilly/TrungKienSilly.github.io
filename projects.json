@@ -16,7 +16,11 @@
         "Highlight và gợi ý ngữ pháp thông minh"
       ],
       "technologies": "Angular, TypeScript, SCSS, HTML5, Responsive Design",
-      "status": "Hoàn thành"
+      "status": "Hoàn thành",
+      "rating": {
+        "average": 4.5,
+        "total": 12
+      }
     }
   },
   {
@@ -35,7 +39,11 @@
         "GitHub streak và activity graph"
       ],
       "technologies": "Markdown, GitHub Profile README, Shields.io Badges",
-      "status": "Đang cập nhật thường xuyên"
+      "status": "Đang cập nhật thường xuyên",
+      "rating": {
+        "average": 4.0,
+        "total": 8
+      }
     }
   },
   {
@@ -56,7 +64,11 @@
         "Giao diện Admin/User tách biệt với nhiều vendor libraries"
       ],
       "technologies": "PHP (mysqli), MySQL/MariaDB, HTML5, CSS3, JavaScript (jQuery), PHPMailer, Morris.js, ApexCharts",
-      "status": "Hoàn thành (đang cải thiện bảo mật)"
+      "status": "Hoàn thành (đang cải thiện bảo mật)",
+      "rating": {
+        "average": 4.8,
+        "total": 25
+      }
     }
   },
   {
@@ -77,7 +89,11 @@
         "Responsive design, error handling SSR, Web Audio API"
       ],
       "technologies": "Angular 20, TypeScript, Azure Cognitive Services Speech SDK, Angular Universal, Express.js, SCSS, Web Audio API, Jasmine/Karma",
-      "status": "Hoàn thành - Production Ready"
+      "status": "Hoàn thành - Production Ready",
+      "rating": {
+        "average": 5.0,
+        "total": 32
+      }
     }
   },
   {
@@ -98,7 +114,11 @@
         "Responsive design, sắp xếp và lọc kết quả đa tiêu chí"
       ],
       "technologies": "PHP 7.4+, MySQL 5.7+, HTML5, CSS3, JavaScript, Responsive CSS",
-      "status": "Hoàn thành"
+      "status": "Hoàn thành",
+      "rating": {
+        "average": 4.3,
+        "total": 18
+      }
     }
   },
   {
@@ -119,7 +139,11 @@
         "Đánh giá và review sân, xem lịch sử đặt sân"
       ],
       "technologies": "PHP 7.4+, MySQL/MariaDB, PDO, VNPAY API, PHPMailer, jQuery, Bootstrap, SCSS",
-      "status": "Hoàn thành (khuyến nghị nâng cấp bảo mật)"
+      "status": "Hoàn thành (khuyến nghị nâng cấp bảo mật)",
+      "rating": {
+        "average": 4.6,
+        "total": 21
+      }
     }
   }
 ]
