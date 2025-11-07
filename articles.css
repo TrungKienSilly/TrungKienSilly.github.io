@@ -39,7 +39,10 @@
   position: relative;
   height: 50vh;
   min-height: 400px;
-  background: linear-gradient(135deg, var(--accent) 0%, #764ba2 100%);
+  background-image: url('img/news_cover.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +51,7 @@
 }
 
 body.dark-mode .articles-hero {
-  background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+  background-image: url('img/news_cover.jpg');
 }
 
 .articles-hero-overlay {
@@ -57,7 +60,8 @@ body.dark-mode .articles-hero {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(0px);
 }
 
 .articles-hero-content {
