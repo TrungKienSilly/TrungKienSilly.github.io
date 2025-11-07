@@ -19,22 +19,51 @@
   
   <button id="articlesBtn" class="articles-btn" aria-label="Bài viết">
     <span class="icon">📝</span>
-    <span class="text">Bài viết</span>
+    <span class="text" data-i18n="articlesBtn">Bài viết</span>
   </button>
+  
+  <div class="language-selector">
+    <button id="languageToggle" class="language-btn" aria-label="Change language">
+      <span id="currentLangFlag" class="lang-flag">🇻🇳</span>
+      <span id="currentLangCode" class="lang-code">VI</span>
+    </button>
+    <div id="languageMenu" class="language-menu">
+      <button class="language-option" data-lang="vi">
+        <span class="lang-flag">🇻🇳</span>
+        <span class="lang-name">Tiếng Việt</span>
+      </button>
+      <button class="language-option" data-lang="en">
+        <span class="lang-flag">🇬🇧</span>
+        <span class="lang-name">English</span>
+      </button>
+      <button class="language-option" data-lang="zh">
+        <span class="lang-flag">🇨🇳</span>
+        <span class="lang-name">中文</span>
+      </button>
+      <button class="language-option" data-lang="th">
+        <span class="lang-flag">🇹🇭</span>
+        <span class="lang-name">ภาษาไทย</span>
+      </button>
+      <button class="language-option" data-lang="ru">
+        <span class="lang-flag">🇷🇺</span>
+        <span class="lang-name">Русский</span>
+      </button>
+    </div>
+  </div>
   
   <!-- Hero Cover Section -->
   <section class="hero-cover">
     <div class="hero-overlay"></div>
     <div class="controls-top">
-      <input id="search" placeholder="Tìm theo tên hoặc mô tả..." aria-label="search">
+      <input id="search" data-i18n-placeholder="searchPlaceholder" placeholder="Tìm theo tên hoặc mô tả..." aria-label="search">
       <select id="tagFilter">
-        <option value="">Tất cả tags</option>
+        <option value="" data-i18n="allTags">Tất cả tags</option>
       </select>
     </div>
     <div class="hero-content">
-      <h1 class="hero-title">Trung Kien Silly</h1>
-      <p class="hero-subtitle">Developer & Creator</p>
-      <p class="hero-description">All my projects are here!</p>
+      <h1 class="hero-title" data-i18n="heroTitle">Trung Kien Silly</h1>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">Developer & Creator</p>
+      <p class="hero-description" data-i18n="heroDescription">All my projects are here!</p>
     </div>
   </section>
 
@@ -53,65 +82,67 @@
   <section class="review-section">
     <div class="container">
       <div class="review-header">
-        <h2 class="review-title"> Đánh giá về dự án của tôi</h2>
+        <h2 class="review-title" data-i18n="reviewTitle">⭐ Đánh giá về dự án của tôi</h2>
       </div>
       
-      <button id="openReviewBtn" class="open-review-btn">
+      <button id="openReviewBtn" class="open-review-btn" data-i18n="writeReview">
         Viết đánh giá
       </button>
 
       <div id="reviewFormContainer" class="review-form-container" style="display: none;">
         <div class="review-form-card">
           <button class="review-close-btn" id="closeReviewForm">&times;</button>
-          <h3 class="review-form-title"> Thông tin đánh giá</h3>
+          <h3 class="review-form-title" data-i18n="reviewFormTitle">📝 Thông tin đánh giá</h3>
           
           <form id="reviewForm" class="review-form">
             <div class="form-group">
               <label for="reviewerName">
-                Tên hiển thị <span class="required">*</span>
+                <span data-i18n="reviewerName">Tên hiển thị</span> <span class="required" data-i18n="required">*</span>
               </label>
               <input 
                 type="text" 
                 id="reviewerName" 
                 name="reviewerName" 
+                data-i18n-placeholder="namePlaceholder"
                 placeholder="Vui lòng nhập tên của bạn"
                 required
                 minlength="2"
                 maxlength="50"
               />
-              <span class="field-hint">Tên sẽ hiển thị công khai</span>
+              <span class="field-hint" data-i18n="nameHint">Tên sẽ hiển thị công khai</span>
             </div>
 
             <div class="form-group">
               <label for="reviewerPhone">
-                Số điện thoại <span class="required">*</span>
+                <span data-i18n="reviewerPhone">Số điện thoại</span> <span class="required" data-i18n="required">*</span>
               </label>
               <input 
                 type="tel" 
                 id="reviewerPhone" 
                 name="reviewerPhone" 
+                data-i18n-placeholder="phonePlaceholder"
                 placeholder="Ví dụ: 0912345678"
                 required
                 pattern="[0-9]{10,11}"
               />
-              <span class="field-hint">10-11 chữ số, không hiển thị công khai</span>
+              <span class="field-hint" data-i18n="phoneHint">10-11 chữ số, không hiển thị công khai</span>
             </div>
 
             <div class="form-group">
               <label for="reviewProject">
-                Dự án bạn đã từng làm với tôi <span class="required">*</span>
+                <span data-i18n="reviewProject">Dự án bạn đã từng làm với tôi</span> <span class="required" data-i18n="required">*</span>
               </label>
               <select id="reviewProject" name="reviewProject" required>
-                <option value="">-- Chọn dự án --</option>
+                <option value="" data-i18n="projectPlaceholder">-- Chọn dự án --</option>
                 <!-- Options will be populated by JavaScript -->
               </select>
-              <span class="field-hint">Chọn dự án bạn có kinh nghiệm</span>
+              <span class="field-hint" data-i18n="projectHint">Chọn dự án bạn có kinh nghiệm</span>
             </div>
 
             <div class="form-group">
               <label for="reviewRating">
                 <span class="label-icon">⭐</span>
-                Đánh giá của bạn <span class="required">*</span>
+                <span data-i18n="reviewRating">Đánh giá của bạn</span> <span class="required" data-i18n="required">*</span>
               </label>
               <div class="rating-stars-input" id="reviewRatingStars">
                 <span class="rating-star" data-value="1">★</span>
@@ -121,34 +152,35 @@
                 <span class="rating-star" data-value="5">★</span>
               </div>
               <input type="hidden" id="reviewRating" name="reviewRating" required />
-              <span class="field-hint rating-hint">Chọn số sao (1-5)</span>
+              <span class="field-hint rating-hint" data-i18n="ratingHint">Chọn số sao (1-5)</span>
             </div>
 
             <div class="form-group">
               <label for="reviewComment">
                 <span class="label-icon">💭</span>
-                Nhận xét chi tiết <span class="optional">(tùy chọn)</span>
+                <span data-i18n="reviewComment">Nhận xét chi tiết</span> <span class="optional" data-i18n="optional">(tùy chọn)</span>
               </label>
               <textarea 
                 id="reviewComment" 
                 name="reviewComment" 
                 rows="4"
+                data-i18n-placeholder="commentPlaceholder"
                 placeholder="Chia sẻ trải nghiệm, điều bạn thích hoặc gợi ý cải thiện..."
                 maxlength="500"
               ></textarea>
               <span class="field-hint char-count">
-                <span id="charCount">0</span>/500 ký tự
+                <span id="charCount">0</span>/500 <span data-i18n="commentHint">ký tự</span>
               </span>
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn-cancel" id="cancelReviewBtn">
+              <button type="button" class="btn-cancel" id="cancelReviewBtn" data-i18n="cancel">
                 Hủy
               </button>
               <button type="submit" class="btn-submit" id="submitReviewBtn">
-                <span class="btn-text">Gửi đánh giá</span>
+                <span class="btn-text" data-i18n="submit">Gửi đánh giá</span>
                 <span class="btn-loading" style="display: none;">
-                  <span class="spinner"></span> Đang gửi...
+                  <span class="spinner"></span> <span data-i18n="submitting">Đang gửi...</span>
                 </span>
               </button>
             </div>
@@ -158,7 +190,7 @@
 
       <div id="reviewsList" class="reviews-list">
         <div id="reviewsContainer" class="reviews-container">
-          <p class="loading-reviews">Đang tải đánh giá...</p>
+          <p class="loading-reviews" data-i18n="loadingReviews">Đang tải đánh giá...</p>
         </div>
       </div>
     </div>
@@ -222,31 +254,32 @@
       <p id="modalFullDesc" class="modal-full-description"></p>
       
       <div class="modal-section">
-        <h3>✨ Tính năng chính</h3>
+        <h3 data-i18n="mainFeatures">✨ Tính năng chính</h3>
         <ul id="modalFeatures" class="modal-features-list"></ul>
       </div>
       
       <div class="modal-section">
-        <h3> Công nghệ sử dụng</h3>
+        <h3 data-i18n="technologies">🔧 Công nghệ sử dụng</h3>
         <p id="modalTech" class="modal-tech"></p>
       </div>
       
       <div class="modal-section">
-        <h3> Trạng thái</h3>
+        <h3 data-i18n="status">📊 Trạng thái</h3>
         <p id="modalStatus" class="modal-status"></p>
       </div>
       
       <div class="modal-buttons">
-        <a id="modalRepoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-primary">
-           Xem Repository
+        <a id="modalRepoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-primary" data-i18n="viewRepo">
+          🔗 Xem Repository
         </a>
-        <a id="modalDemoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-secondary" style="display: none;">
-           Xem Demo
+        <a id="modalDemoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-secondary" style="display: none;" data-i18n="viewDemo">
+          🚀 Xem Demo
         </a>
       </div>
     </div>
   </div>
 
+  <script src="translations.js"></script>
   <script src="firebase-config.js"></script>
   <script src="script.js"></script>
 </body>

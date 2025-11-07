@@ -68,8 +68,24 @@ body.dark-mode .controls-top input:focus, body.dark-mode .controls-top select:fo
 .articles-btn .icon{font-size:1.4rem}
 .articles-btn .text{display:none}
 
-/* Theme Toggle - below Articles button */
-.theme-toggle{position:fixed;top:80px;right:20px;background:var(--card);border:1px solid var(--border);border-radius:50%;width:50px;height:50px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 2px 8px var(--shadow);transition:all 0.3s;z-index:1000}
+/* Language Selector - below Articles button */
+.language-selector{position:fixed;top:80px;right:20px;z-index:1000}
+.language-btn{background:var(--card);border:1px solid var(--border);border-radius:50%;width:50px;height:50px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:1.2rem;box-shadow:0 2px 8px var(--shadow);transition:all 0.3s;padding:4px}
+.language-btn:hover{transform:scale(1.1);box-shadow:0 4px 12px var(--shadow-hover)}
+.language-btn .lang-flag{font-size:1.2rem;line-height:1}
+.language-btn .lang-code{font-size:0.6rem;font-weight:700;color:var(--accent);line-height:1;text-transform:uppercase}
+
+.language-menu{position:absolute;top:100%;right:0;margin-top:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;min-width:180px;box-shadow:0 8px 24px var(--shadow-hover);opacity:0;visibility:hidden;transform:translateY(-10px);transition:all 0.3s;display:flex;flex-direction:column;gap:4px}
+.language-menu.active{opacity:1;visibility:visible;transform:translateY(0)}
+
+.language-option{background:transparent;border:none;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;text-decoration:none;color:var(--text);transition:all 0.2s;font-size:0.95rem;width:100%;text-align:left}
+.language-option:hover{background:var(--glass);transform:translateX(4px)}
+.language-option.active{background:rgba(13,110,253,0.1);color:var(--accent)}
+.language-option .lang-flag{font-size:1.3rem;width:24px;text-align:center}
+.language-option .lang-name{font-weight:500}
+
+/* Theme Toggle - below Language button */
+.theme-toggle{position:fixed;top:140px;right:20px;background:var(--card);border:1px solid var(--border);border-radius:50%;width:50px;height:50px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 2px 8px var(--shadow);transition:all 0.3s;z-index:1000}
 .theme-toggle:hover{transform:scale(1.1);box-shadow:0 4px 12px var(--shadow-hover)}
 .theme-toggle .icon-sun{display:block}
 .theme-toggle .icon-moon{display:none}

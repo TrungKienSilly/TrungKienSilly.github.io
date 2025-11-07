@@ -6,6 +6,10 @@ const themeToggle = document.getElementById('themeToggle');
 const socialToggle = document.getElementById('socialToggle');
 const socialMenu = document.getElementById('socialMenu');
 const articlesBtn = document.getElementById('articlesBtn');
+const languageToggle = document.getElementById('languageToggle');
+const languageMenu = document.getElementById('languageMenu');
+const currentLangFlag = document.getElementById('currentLangFlag');
+const currentLangCode = document.getElementById('currentLangCode');
 
 yearEl.textContent = new Date().getFullYear();
 
@@ -23,10 +27,60 @@ themeToggle.addEventListener('click', ()=>{
 
 // Articles button click
 articlesBtn.addEventListener('click', () => {
-  // Tạm thời hiển thị thông báo, bạn có thể thay đổi để navigate đến trang bài viết
-  showNotification('📝 Tính năng Bài viết đang được phát triển!', 'success');
-  // Hoặc navigate đến trang khác:
-  // window.location.href = '/blog' hoặc '/articles'
+  showNotification(t('articlesDev'), 'success');
+});
+
+// Language selector
+function updateLanguageDisplay(langCode) {
+  const lang = translations[langCode];
+  if (lang) {
+    currentLangFlag.textContent = lang.flag;
+    currentLangCode.textContent = langCode.toUpperCase();
+  }
+}
+
+// Initialize language on load
+const savedLanguage = getCurrentLanguage();
+updateLanguageDisplay(savedLanguage);
+applyTranslations();
+
+languageToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  languageMenu.classList.toggle('active');
+  socialMenu.classList.remove('active');
+});
+
+// Language option click
+document.querySelectorAll('.language-option').forEach(option => {
+  option.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const langCode = option.getAttribute('data-lang');
+    setCurrentLanguage(langCode);
+    updateLanguageDisplay(langCode);
+    applyTranslations();
+    
+    // Update active state
+    document.querySelectorAll('.language-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
+    option.classList.add('active');
+    
+    languageMenu.classList.remove('active');
+    
+    // Refresh projects and reviews to update translations
+    renderProjects(projects);
+    loadReviews();
+    populateReviewProjects();
+    
+    showNotification(`Language changed to ${translations[langCode].name}`, 'success');
+  });
+});
+
+// Set active language option on load
+document.querySelectorAll('.language-option').forEach(option => {
+  if (option.getAttribute('data-lang') === savedLanguage) {
+    option.classList.add('active');
+  }
 });
 
 // Social menu toggle
@@ -39,6 +93,9 @@ socialToggle.addEventListener('click', (e)=>{
 document.addEventListener('click', (e)=>{
   if(!socialMenu.contains(e.target) && e.target !== socialToggle){
     socialMenu.classList.remove('active');
+  }
+  if(!languageMenu.contains(e.target) && e.target !== languageToggle){
+    languageMenu.classList.remove('active');
   }
 });
 
@@ -66,13 +123,23 @@ function populateTagFilter(){
 }
 
 function renderProjects(list){
-  if(!list.length){ projectsEl.innerHTML = '<p class="desc">Chưa có project nào khớp.</p>'; return }
+  if(!list.length){ 
+    projectsEl.innerHTML = `<p class="desc" data-i18n="noProjects">${t('noProjects')}</p>`; 
+    return 
+  }
   projectsEl.innerHTML = '';
   list.forEach(p=>{
     const card = document.createElement('article');
     card.className = 'card';
     const title = document.createElement('h3'); title.className='title'; title.textContent = p.name;
-    const desc = document.createElement('div'); desc.className='desc'; desc.textContent = p.description || '';
+    
+    // Get translated description
+    const currentLang = getCurrentLanguage();
+    const translatedDesc = translations[currentLang]?.projectDescriptions?.[p.name];
+    const desc = document.createElement('div'); 
+    desc.className='desc'; 
+    desc.textContent = translatedDesc || p.description || '';
+    
     const meta = document.createElement('div'); meta.className = 'meta';
     (p.tags||[]).slice(0,6).forEach(t=>{ const sp = document.createElement('span'); sp.className='tag'; sp.textContent=t; meta.appendChild(sp)});
     const links = document.createElement('div'); links.className='links';
@@ -80,7 +147,7 @@ function renderProjects(list){
     // More info button - opens modal
     const moreInfoBtn = document.createElement('a');
     moreInfoBtn.href = '#';
-    moreInfoBtn.textContent = 'More info';
+    moreInfoBtn.textContent = t('moreInfo');
     moreInfoBtn.addEventListener('click', (e)=>{
       e.preventDefault();
       openProjectModal(p);
@@ -88,7 +155,10 @@ function renderProjects(list){
     links.appendChild(moreInfoBtn);
     
     // Repo link
-    if(p.repo) links.appendChild(linkEl('Repo',p.repo));
+    if(p.repo) {
+      const repoLink = linkEl(t('repo'), p.repo);
+      links.appendChild(repoLink);
+    }
 
     card.appendChild(title);
     card.appendChild(desc);
@@ -189,7 +259,7 @@ function populateReviewProjects() {
     return;
   }
   
-  reviewProjectSelect.innerHTML = '<option value="">-- Chọn dự án --</option>';
+  reviewProjectSelect.innerHTML = `<option value="">${t('projectPlaceholder')}</option>`;
   projects.forEach(project => {
     const option = document.createElement('option');
     option.value = project.name;
@@ -281,22 +351,22 @@ reviewForm.addEventListener('submit', async (e) => {
   
   // Validate
   if (!reviewerName || reviewerName.length < 2) {
-    showNotification('Vui lòng nhập tên hợp lệ (tối thiểu 2 ký tự)', 'error');
+    showNotification(t('validationName'), 'error');
     return;
   }
   
   if (!reviewerPhone || !/^[0-9]{10,11}$/.test(reviewerPhone)) {
-    showNotification('Số điện thoại không hợp lệ (10-11 chữ số)', 'error');
+    showNotification(t('validationPhone'), 'error');
     return;
   }
   
   if (!reviewProject) {
-    showNotification('Vui lòng chọn dự án', 'error');
+    showNotification(t('validationProject'), 'error');
     return;
   }
   
   if (selectedReviewRating === 0) {
-    showNotification('Vui lòng chọn số sao đánh giá', 'error');
+    showNotification(t('validationRating'), 'error');
     return;
   }
   
@@ -321,20 +391,20 @@ reviewForm.addEventListener('submit', async (e) => {
     const success = await saveReviewToFirebase(reviewData);
     
     if (success) {
-      showNotification(' Cảm ơn bạn đã đánh giá! Ý kiến của bạn rất quan trọng.', 'success');
+      showNotification(t('successReview'), 'success');
       closeReviewForm();
       // Reload reviews list
       loadReviews();
     } else {
       // Fallback to localStorage if Firebase fails
       saveReviewToLocalStorage(reviewData);
-      showNotification('✅ Đánh giá đã được lưu!', 'success');
+      showNotification(t('savedReview'), 'success');
       closeReviewForm();
       loadReviews();
     }
   } catch (error) {
     console.error('Error submitting review:', error);
-    showNotification('❌ Có lỗi xảy ra. Vui lòng thử lại.', 'error');
+    showNotification(t('errorReview'), 'error');
   } finally {
     // Reset loading state
     submitReviewBtn.disabled = false;
@@ -367,7 +437,7 @@ async function loadReviews() {
     return;
   }
   
-  reviewsContainer.innerHTML = '<p class="loading-reviews">Đang tải đánh giá...</p>';
+  reviewsContainer.innerHTML = `<p class="loading-reviews" data-i18n="loadingReviews">${t('loadingReviews')}</p>`;
   
   try {
     let reviews = [];
@@ -389,7 +459,7 @@ async function loadReviews() {
       reviewsContainer.innerHTML = `
         <div class="no-reviews">
           <div class="no-reviews-icon">💬</div>
-          <p>Chưa có đánh giá nào. Hãy là người đầu tiên!</p>
+          <p data-i18n="noReviews">${t('noReviews')}</p>
         </div>
       `;
       return;
@@ -407,7 +477,7 @@ async function loadReviews() {
     
   } catch (error) {
     console.error('Error loading reviews:', error);
-    reviewsContainer.innerHTML = '<p class="loading-reviews">Không thể tải đánh giá.</p>';
+    reviewsContainer.innerHTML = `<p class="loading-reviews" data-i18n="cannotLoadReviews">${t('cannotLoadReviews')}</p>`;
   }
 }
 
@@ -538,18 +608,21 @@ async function openProjectModal(project){
       modalFeatures.appendChild(li);
     });
   } else {
-    modalFeatures.innerHTML = '<li>Đang cập nhật...</li>';
+    const li = document.createElement('li');
+    li.textContent = t('updating');
+    modalFeatures.appendChild(li);
   }
   
   // Technologies
-  modalTech.textContent = details.technologies || 'Đang cập nhật...';
+  modalTech.textContent = details.technologies || t('updating');
   
   // Status
-  modalStatus.textContent = details.status || 'Đang phát triển';
+  modalStatus.textContent = details.status || t('inDevelopment');
   
   // Links
   if(project.repo){
     modalRepoLink.href = project.repo;
+    modalRepoLink.textContent = t('viewRepo');
     modalRepoLink.style.display = 'inline-block';
   } else {
     modalRepoLink.style.display = 'none';
@@ -558,6 +631,7 @@ async function openProjectModal(project){
   // Only show Demo button for Warmguys project
   if(project.demo && project.name === 'Warmguys'){
     modalDemoLink.href = project.demo;
+    modalDemoLink.textContent = t('viewDemo');
     modalDemoLink.style.display = 'inline-block';
   } else {
     modalDemoLink.style.display = 'none';
