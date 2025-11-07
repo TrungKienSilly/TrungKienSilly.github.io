@@ -5,6 +5,7 @@ const yearEl = document.getElementById('year');
 const themeToggle = document.getElementById('themeToggle');
 const socialToggle = document.getElementById('socialToggle');
 const socialMenu = document.getElementById('socialMenu');
+const articlesBtn = document.getElementById('articlesBtn');
 
 yearEl.textContent = new Date().getFullYear();
 
@@ -18,6 +19,14 @@ themeToggle.addEventListener('click', ()=>{
   document.body.classList.toggle('dark-mode');
   const isDark = document.body.classList.contains('dark-mode');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+
+// Articles button click
+articlesBtn.addEventListener('click', () => {
+  // Tạm thời hiển thị thông báo, bạn có thể thay đổi để navigate đến trang bài viết
+  showNotification('📝 Tính năng Bài viết đang được phát triển!', 'success');
+  // Hoặc navigate đến trang khác:
+  // window.location.href = '/blog' hoặc '/articles'
 });
 
 // Social menu toggle

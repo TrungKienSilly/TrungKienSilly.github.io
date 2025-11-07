@@ -17,6 +17,11 @@
     <span class="icon-moon">🌙</span>
   </button>
   
+  <button id="articlesBtn" class="articles-btn" aria-label="Bài viết">
+    <span class="icon">📝</span>
+    <span class="text">Bài viết</span>
+  </button>
+  
   <!-- Hero Cover Section -->
   <section class="hero-cover">
     <div class="hero-overlay"></div>
@@ -52,7 +57,7 @@
       </div>
       
       <button id="openReviewBtn" class="open-review-btn">
-        ✍️ Viết đánh giá
+        Viết đánh giá
       </button>
 
       <div id="reviewFormContainer" class="review-form-container" style="display: none;">
@@ -63,7 +68,6 @@
           <form id="reviewForm" class="review-form">
             <div class="form-group">
               <label for="reviewerName">
-                <span class="label-icon">👤</span>
                 Tên hiển thị <span class="required">*</span>
               </label>
               <input 
@@ -80,7 +84,6 @@
 
             <div class="form-group">
               <label for="reviewerPhone">
-                <span class="label-icon">📱</span>
                 Số điện thoại <span class="required">*</span>
               </label>
               <input 
@@ -96,7 +99,6 @@
 
             <div class="form-group">
               <label for="reviewProject">
-                <span class="label-icon">🚀</span>
                 Dự án bạn đã từng làm với tôi <span class="required">*</span>
               </label>
               <select id="reviewProject" name="reviewProject" required>

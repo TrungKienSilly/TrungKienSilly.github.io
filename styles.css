@@ -71,6 +71,12 @@ body.dark-mode .controls-top input:focus, body.dark-mode .controls-top select:fo
 body.dark-mode .theme-toggle .icon-sun{display:none}
 body.dark-mode .theme-toggle .icon-moon{display:block}
 
+/* Articles Button */
+.articles-btn{position:fixed;top:20px;left:20px;background:var(--accent);color:white;border:1px solid var(--border);border-radius:25px;padding:10px 20px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:600;box-shadow:0 2px 8px var(--shadow);transition:all 0.3s;z-index:1000}
+.articles-btn:hover{transform:scale(1.05);box-shadow:0 4px 12px var(--shadow-hover)}
+.articles-btn .icon{font-size:1.2rem}
+.articles-btn .text{font-size:0.95rem}
+
 /* Social Bubble */
 .social-bubble-container{position:fixed;bottom:24px;right:24px;z-index:1000}
 .social-bubble{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:none;border-radius:50%;width:60px;height:60px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 4px 16px rgba(102,126,234,0.4);transition:all 0.3s;animation:pulse 2s infinite}
@@ -108,6 +114,9 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
   .controls-top select{min-width:100%}
   .site-header h1{font-size:1.5rem}
   .theme-toggle{width:44px;height:44px;font-size:1.2rem;top:16px;right:16px}
+  .articles-btn{left:16px;top:16px;padding:8px 16px;font-size:0.9rem}
+  .articles-btn .icon{font-size:1.1rem}
+  .articles-btn .text{font-size:0.85rem}
   .social-bubble{width:54px;height:54px;font-size:1.6rem}
   .social-bubble-container{bottom:20px;right:20px}
   .social-menu{min-width:180px;bottom:64px}
