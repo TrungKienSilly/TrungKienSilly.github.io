@@ -151,6 +151,351 @@ document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape' && projectModal.classList.contains('active')){
     closeProjectModal();
   }
+  if(e.key === 'Escape' && reviewFormContainer.style.display !== 'none'){
+    closeReviewForm();
+  }
+});
+
+// ==============================
+// REVIEW SECTION FUNCTIONALITY
+// ==============================
+const openReviewBtn = document.getElementById('openReviewBtn');
+const reviewFormContainer = document.getElementById('reviewFormContainer');
+const closeReviewFormBtn = document.getElementById('closeReviewForm');
+const cancelReviewBtn = document.getElementById('cancelReviewBtn');
+const reviewForm = document.getElementById('reviewForm');
+const reviewProjectSelect = document.getElementById('reviewProject');
+const reviewRatingStars = document.getElementById('reviewRatingStars');
+const reviewRatingInput = document.getElementById('reviewRating');
+const reviewCommentTextarea = document.getElementById('reviewComment');
+const charCountSpan = document.getElementById('charCount');
+const submitReviewBtn = document.getElementById('submitReviewBtn');
+
+let selectedReviewRating = 0;
+
+// Populate project dropdown from projects array
+function populateReviewProjects() {
+  if (!projects || projects.length === 0) {
+    setTimeout(populateReviewProjects, 500);
+    return;
+  }
+  
+  reviewProjectSelect.innerHTML = '<option value="">-- Chọn dự án --</option>';
+  projects.forEach(project => {
+    const option = document.createElement('option');
+    option.value = project.name;
+    option.textContent = project.name;
+    reviewProjectSelect.appendChild(option);
+  });
+}
+
+// Open review form
+openReviewBtn.addEventListener('click', () => {
+  reviewFormContainer.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  populateReviewProjects();
+});
+
+// Close review form
+function closeReviewForm() {
+  reviewFormContainer.style.display = 'none';
+  document.body.style.overflow = '';
+  reviewForm.reset();
+  selectedReviewRating = 0;
+  updateReviewStarsDisplay();
+}
+
+closeReviewFormBtn.addEventListener('click', closeReviewForm);
+cancelReviewBtn.addEventListener('click', closeReviewForm);
+
+// Close when clicking outside
+reviewFormContainer.addEventListener('click', (e) => {
+  if (e.target === reviewFormContainer) {
+    closeReviewForm();
+  }
+});
+
+// Rating stars interaction
+reviewRatingStars.addEventListener('mouseover', (e) => {
+  if (e.target.classList.contains('rating-star')) {
+    const value = parseInt(e.target.dataset.value);
+    const stars = reviewRatingStars.querySelectorAll('.rating-star');
+    stars.forEach((star, index) => {
+      if (index < value) {
+        star.classList.add('hovered');
+      } else {
+        star.classList.remove('hovered');
+      }
+    });
+  }
+});
+
+reviewRatingStars.addEventListener('mouseout', () => {
+  const stars = reviewRatingStars.querySelectorAll('.rating-star');
+  stars.forEach(star => star.classList.remove('hovered'));
+});
+
+reviewRatingStars.addEventListener('click', (e) => {
+  if (e.target.classList.contains('rating-star')) {
+    selectedReviewRating = parseInt(e.target.dataset.value);
+    reviewRatingInput.value = selectedReviewRating;
+    updateReviewStarsDisplay();
+  }
+});
+
+function updateReviewStarsDisplay() {
+  const stars = reviewRatingStars.querySelectorAll('.rating-star');
+  stars.forEach((star, index) => {
+    if (index < selectedReviewRating) {
+      star.classList.add('selected');
+    } else {
+      star.classList.remove('selected');
+    }
+  });
+}
+
+// Character counter for comment
+reviewCommentTextarea.addEventListener('input', () => {
+  const length = reviewCommentTextarea.value.length;
+  charCountSpan.textContent = length;
+});
+
+// Form validation and submission
+reviewForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  // Get form values
+  const reviewerName = document.getElementById('reviewerName').value.trim();
+  const reviewerPhone = document.getElementById('reviewerPhone').value.trim();
+  const reviewProject = reviewProjectSelect.value;
+  const reviewComment = reviewCommentTextarea.value.trim();
+  
+  // Validate
+  if (!reviewerName || reviewerName.length < 2) {
+    showNotification('Vui lòng nhập tên hợp lệ (tối thiểu 2 ký tự)', 'error');
+    return;
+  }
+  
+  if (!reviewerPhone || !/^[0-9]{10,11}$/.test(reviewerPhone)) {
+    showNotification('Số điện thoại không hợp lệ (10-11 chữ số)', 'error');
+    return;
+  }
+  
+  if (!reviewProject) {
+    showNotification('Vui lòng chọn dự án', 'error');
+    return;
+  }
+  
+  if (selectedReviewRating === 0) {
+    showNotification('Vui lòng chọn số sao đánh giá', 'error');
+    return;
+  }
+  
+  // Show loading state
+  submitReviewBtn.disabled = true;
+  submitReviewBtn.querySelector('.btn-text').style.display = 'none';
+  submitReviewBtn.querySelector('.btn-loading').style.display = 'flex';
+  
+  // Prepare review data
+  const reviewData = {
+    reviewerName: reviewerName,
+    reviewerPhone: reviewerPhone,
+    projectName: reviewProject,
+    rating: selectedReviewRating,
+    comment: reviewComment || '',
+    timestamp: Date.now(),
+    userAgent: navigator.userAgent.substring(0, 100)
+  };
+  
+  try {
+    // Save to Firebase
+    const success = await saveReviewToFirebase(reviewData);
+    
+    if (success) {
+      showNotification(' Cảm ơn bạn đã đánh giá! Ý kiến của bạn rất quan trọng.', 'success');
+      closeReviewForm();
+      // Reload reviews list
+      loadReviews();
+    } else {
+      // Fallback to localStorage if Firebase fails
+      saveReviewToLocalStorage(reviewData);
+      showNotification('✅ Đánh giá đã được lưu!', 'success');
+      closeReviewForm();
+      loadReviews();
+    }
+  } catch (error) {
+    console.error('Error submitting review:', error);
+    showNotification('❌ Có lỗi xảy ra. Vui lòng thử lại.', 'error');
+  } finally {
+    // Reset loading state
+    submitReviewBtn.disabled = false;
+    submitReviewBtn.querySelector('.btn-text').style.display = 'inline';
+    submitReviewBtn.querySelector('.btn-loading').style.display = 'none';
+  }
+});
+
+// Save review to localStorage (fallback)
+function saveReviewToLocalStorage(reviewData) {
+  const reviews = JSON.parse(localStorage.getItem('portfolioReviews') || '[]');
+  reviews.unshift(reviewData); // Add to beginning
+  // Keep only last 50 reviews
+  if (reviews.length > 50) {
+    reviews.splice(50);
+  }
+  localStorage.setItem('portfolioReviews', JSON.stringify(reviews));
+}
+
+// Load and display reviews
+async function loadReviews() {
+  console.log(' loadReviews() called');
+  
+  // Get reviewsContainer element (in case it wasn't available at script load time)
+  const reviewsContainer = document.getElementById('reviewsContainer');
+  console.log(' reviewsContainer:', reviewsContainer);
+  
+  if (!reviewsContainer) {
+    console.error('❌ reviewsContainer not found in DOM!');
+    return;
+  }
+  
+  reviewsContainer.innerHTML = '<p class="loading-reviews">Đang tải đánh giá...</p>';
+  
+  try {
+    let reviews = [];
+    
+    // Check if Firebase is initialized by checking if database exists
+    if (typeof database !== 'undefined' && database) {
+      // Try to load from Firebase
+      reviews = await getReviewsFromFirebase();
+      console.log(' Loaded reviews from Firebase:', reviews);
+    }
+    
+    if (!reviews || reviews.length === 0) {
+      // Fallback to localStorage
+      reviews = JSON.parse(localStorage.getItem('portfolioReviews') || '[]');
+      console.log(' Loaded reviews from localStorage:', reviews);
+    }
+    
+    if (reviews.length === 0) {
+      reviewsContainer.innerHTML = `
+        <div class="no-reviews">
+          <div class="no-reviews-icon">💬</div>
+          <p>Chưa có đánh giá nào. Hãy là người đầu tiên!</p>
+        </div>
+      `;
+      return;
+    }
+    
+    // Sort by timestamp (newest first)
+    reviews.sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Display reviews (limit to 10 most recent)
+    reviewsContainer.innerHTML = '';
+    reviews.slice(0, 10).forEach(review => {
+      const reviewCard = createReviewCard(review);
+      reviewsContainer.appendChild(reviewCard);
+    });
+    
+  } catch (error) {
+    console.error('Error loading reviews:', error);
+    reviewsContainer.innerHTML = '<p class="loading-reviews">Không thể tải đánh giá.</p>';
+  }
+}
+
+// Create review card element
+function createReviewCard(review) {
+  const card = document.createElement('div');
+  card.className = 'review-card';
+  
+  // Generate stars
+  const starsHTML = Array.from({length: 5}, (_, i) => {
+    if (i < review.rating) {
+      return '<span class="star-filled">★</span>';
+    } else {
+      return '<span class="star-empty">★</span>';
+    }
+  }).join('');
+  
+  // Format date
+  const date = new Date(review.timestamp);
+  const formattedDate = date.toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  card.innerHTML = `
+    <div class="review-card-header">
+      <div class="review-card-info">
+        <div class="reviewer-name">${escapeHtml(review.reviewerName)}</div>
+        <div class="review-project">📦 ${escapeHtml(review.projectName)}</div>
+      </div>
+      <div class="review-card-rating">
+        ${starsHTML}
+      </div>
+    </div>
+    ${review.comment ? `<p class="review-comment">"${escapeHtml(review.comment)}"</p>` : ''}
+    <div class="review-card-footer">
+      <span class="review-date">📅 ${formattedDate}</span>
+    </div>
+  `;
+  
+  return card;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Show notification
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${type === 'error' ? '#dc3545' : 'var(--accent)'};
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 99999;
+    animation: slideDown 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+    font-weight: 600;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideUp 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// ==============================
+// INITIALIZE ON PAGE LOAD
+// ==============================
+window.addEventListener('DOMContentLoaded', async () => {
+  console.log(' DOMContentLoaded - Initializing...');
+  
+  // Initialize Firebase first
+  const firebaseReady = initFirebase();
+  console.log('🔥 Firebase ready:', firebaseReady);
+  
+  // Wait a bit for Firebase to fully initialize
+  if (firebaseReady) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+  
+  // Then load reviews
+  console.log(' Starting to load reviews...');
+  loadReviews();
 });
 
 // ==============================
@@ -165,23 +510,8 @@ const modalTech = document.getElementById('modalTech');
 const modalStatus = document.getElementById('modalStatus');
 const modalRepoLink = document.getElementById('modalRepoLink');
 const modalDemoLink = document.getElementById('modalDemoLink');
-const ratingStars = document.getElementById('ratingStars');
-const currentRatingEl = document.getElementById('currentRating');
-const totalReviewsEl = document.getElementById('totalReviews');
 
 let currentProject = null;
-let useFirebase = false;
-let currentRatingListener = null;
-
-// Initialize Firebase when page loads
-window.addEventListener('DOMContentLoaded', () => {
-  useFirebase = initFirebase();
-  if (useFirebase) {
-    console.log('🔥 Using Firebase for ratings');
-  } else {
-    console.log('💾 Using localStorage for ratings');
-  }
-});
 
 async function openProjectModal(project){
   currentProject = project;
@@ -208,36 +538,6 @@ async function openProjectModal(project){
   // Status
   modalStatus.textContent = details.status || 'Đang phát triển';
   
-  // Stop previous listener if exists
-  if (currentRatingListener) {
-    currentRatingListener.off();
-    currentRatingListener = null;
-  }
-  
-  // Rating - Load from Firebase or use default
-  if (useFirebase) {
-    // Listen to real-time updates
-    currentRatingListener = listenToRatings(project.name, (ratingData) => {
-      currentRatingEl.textContent = ratingData.average.toFixed(1);
-      totalReviewsEl.textContent = ratingData.total;
-      updateStarsDisplay(ratingData.average);
-    });
-  } else {
-    // Use data from JSON or localStorage
-    const rating = details.rating || { average: 0, total: 0 };
-    const localRatings = getLocalRatings(project.name);
-    
-    if (localRatings.total > 0) {
-      currentRatingEl.textContent = localRatings.average.toFixed(1);
-      totalReviewsEl.textContent = localRatings.total;
-      updateStarsDisplay(localRatings.average);
-    } else {
-      currentRatingEl.textContent = rating.average.toFixed(1);
-      totalReviewsEl.textContent = rating.total;
-      updateStarsDisplay(rating.average);
-    }
-  }
-  
   // Links
   if(project.repo){
     modalRepoLink.href = project.repo;
@@ -258,139 +558,7 @@ async function openProjectModal(project){
   document.body.style.overflow = 'hidden';
 }
 
-function updateStarsDisplay(rating){
-  const stars = ratingStars.querySelectorAll('.star');
-  const fullStars = Math.floor(rating);
-  stars.forEach((star, index) => {
-    if(index < fullStars){
-      star.classList.add('active');
-    } else {
-      star.classList.remove('active');
-    }
-  });
-}
-
-// Star rating interaction
-ratingStars.addEventListener('mouseover', (e)=>{
-  if(e.target.classList.contains('star')){
-    const value = parseInt(e.target.dataset.value);
-    const stars = ratingStars.querySelectorAll('.star');
-    stars.forEach((star, index) => {
-      if(index < value){
-        star.classList.add('hovered');
-      } else {
-        star.classList.remove('hovered');
-      }
-    });
-  }
-});
-
-ratingStars.addEventListener('mouseout', ()=>{
-  const stars = ratingStars.querySelectorAll('.star');
-  stars.forEach(star => star.classList.remove('hovered'));
-});
-
-ratingStars.addEventListener('click', (e)=>{
-  if(e.target.classList.contains('star') && currentProject){
-    const value = parseInt(e.target.dataset.value);
-    submitRating(currentProject, value);
-  }
-});
-
-function submitRating(project, rating){
-  if (useFirebase) {
-    // Save to Firebase
-    saveRatingToFirebase(project.name, rating).then(success => {
-      if (success) {
-        showRatingFeedback(rating);
-        // Real-time listener will update the display automatically
-      } else {
-        // Fallback to localStorage
-        saveRatingLocally(project, rating);
-      }
-    });
-  } else {
-    // Save to localStorage
-    saveRatingLocally(project, rating);
-  }
-}
-
-function saveRatingLocally(project, rating) {
-  // Get existing ratings from localStorage
-  const ratings = JSON.parse(localStorage.getItem('projectRatings') || '{}');
-  const projectKey = project.name.replace(/\s+/g, '_');
-  
-  if(!ratings[projectKey]){
-    ratings[projectKey] = [];
-  }
-  
-  ratings[projectKey].push(rating);
-  localStorage.setItem('projectRatings', JSON.stringify(ratings));
-  
-  // Calculate new average
-  const allRatings = ratings[projectKey];
-  const average = allRatings.reduce((a,b)=>a+b, 0) / allRatings.length;
-  const total = allRatings.length;
-  
-  // Update display
-  currentRatingEl.textContent = average.toFixed(1);
-  totalReviewsEl.textContent = total;
-  updateStarsDisplay(average);
-  
-  // Update project data
-  if(!project.detailedInfo) project.detailedInfo = {};
-  if(!project.detailedInfo.rating) project.detailedInfo.rating = {};
-  project.detailedInfo.rating.average = average;
-  project.detailedInfo.rating.total = total;
-  
-  // Show feedback
-  showRatingFeedback(rating);
-}
-
-function getLocalRatings(projectName) {
-  const ratings = JSON.parse(localStorage.getItem('projectRatings') || '{}');
-  const projectKey = projectName.replace(/\s+/g, '_');
-  
-  if (!ratings[projectKey] || ratings[projectKey].length === 0) {
-    return { average: 0, total: 0 };
-  }
-  
-  const allRatings = ratings[projectKey];
-  const average = allRatings.reduce((a,b)=>a+b, 0) / allRatings.length;
-  
-  return {
-    average: average,
-    total: allRatings.length
-  };
-}
-
-function showRatingFeedback(rating){
-  const messages = {
-    1: 'Cảm ơn phản hồi! Tôi sẽ cố gắng cải thiện.',
-    2: 'Cảm ơn! Tôi sẽ làm tốt hơn.',
-    3: 'Cảm ơn đánh giá của bạn!',
-    4: 'Rất vui vì bạn thích dự án này!',
-    5: 'Tuyệt vời! Cảm ơn bạn rất nhiều! ⭐'
-  };
-  
-  const feedback = document.createElement('div');
-  feedback.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:1rem 2rem;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:99999;animation:slideDown 0.3s ease;';
-  feedback.textContent = messages[rating] || 'Cảm ơn đánh giá!';
-  document.body.appendChild(feedback);
-  
-  setTimeout(()=>{
-    feedback.style.animation = 'slideUp 0.3s ease';
-    setTimeout(()=> feedback.remove(), 300);
-  }, 2000);
-}
-
 function closeProjectModal(){
-  // Clean up listener when closing modal
-  if (currentRatingListener) {
-    currentRatingListener.off();
-    currentRatingListener = null;
-  }
-  
   projectModal.classList.remove('active');
   document.body.style.overflow = '';
 }

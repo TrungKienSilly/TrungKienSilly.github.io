@@ -44,6 +44,124 @@
     </section>
   </main>
 
+  <!-- Review Section -->
+  <section class="review-section">
+    <div class="container">
+      <div class="review-header">
+        <h2 class="review-title"> Đánh giá về dự án của tôi</h2>
+      </div>
+      
+      <button id="openReviewBtn" class="open-review-btn">
+        ✍️ Viết đánh giá
+      </button>
+
+      <div id="reviewFormContainer" class="review-form-container" style="display: none;">
+        <div class="review-form-card">
+          <button class="review-close-btn" id="closeReviewForm">&times;</button>
+          <h3 class="review-form-title"> Thông tin đánh giá</h3>
+          
+          <form id="reviewForm" class="review-form">
+            <div class="form-group">
+              <label for="reviewerName">
+                <span class="label-icon">👤</span>
+                Tên hiển thị <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="reviewerName" 
+                name="reviewerName" 
+                placeholder="Vui lòng nhập tên của bạn"
+                required
+                minlength="2"
+                maxlength="50"
+              />
+              <span class="field-hint">Tên sẽ hiển thị công khai</span>
+            </div>
+
+            <div class="form-group">
+              <label for="reviewerPhone">
+                <span class="label-icon">📱</span>
+                Số điện thoại <span class="required">*</span>
+              </label>
+              <input 
+                type="tel" 
+                id="reviewerPhone" 
+                name="reviewerPhone" 
+                placeholder="Ví dụ: 0912345678"
+                required
+                pattern="[0-9]{10,11}"
+              />
+              <span class="field-hint">10-11 chữ số, không hiển thị công khai</span>
+            </div>
+
+            <div class="form-group">
+              <label for="reviewProject">
+                <span class="label-icon">🚀</span>
+                Dự án bạn đã từng làm với tôi <span class="required">*</span>
+              </label>
+              <select id="reviewProject" name="reviewProject" required>
+                <option value="">-- Chọn dự án --</option>
+                <!-- Options will be populated by JavaScript -->
+              </select>
+              <span class="field-hint">Chọn dự án bạn có kinh nghiệm</span>
+            </div>
+
+            <div class="form-group">
+              <label for="reviewRating">
+                <span class="label-icon">⭐</span>
+                Đánh giá của bạn <span class="required">*</span>
+              </label>
+              <div class="rating-stars-input" id="reviewRatingStars">
+                <span class="rating-star" data-value="1">★</span>
+                <span class="rating-star" data-value="2">★</span>
+                <span class="rating-star" data-value="3">★</span>
+                <span class="rating-star" data-value="4">★</span>
+                <span class="rating-star" data-value="5">★</span>
+              </div>
+              <input type="hidden" id="reviewRating" name="reviewRating" required />
+              <span class="field-hint rating-hint">Chọn số sao (1-5)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="reviewComment">
+                <span class="label-icon">💭</span>
+                Nhận xét chi tiết <span class="optional">(tùy chọn)</span>
+              </label>
+              <textarea 
+                id="reviewComment" 
+                name="reviewComment" 
+                rows="4"
+                placeholder="Chia sẻ trải nghiệm, điều bạn thích hoặc gợi ý cải thiện..."
+                maxlength="500"
+              ></textarea>
+              <span class="field-hint char-count">
+                <span id="charCount">0</span>/500 ký tự
+              </span>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="cancelReviewBtn">
+                Hủy
+              </button>
+              <button type="submit" class="btn-submit" id="submitReviewBtn">
+                <span class="btn-text">Gửi đánh giá</span>
+                <span class="btn-loading" style="display: none;">
+                  <span class="spinner"></span> Đang gửi...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="reviewsList" class="reviews-list">
+        <div id="reviewsContainer" class="reviews-container">
+          <p class="loading-reviews">Đang tải đánh giá...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="container">
       <p>© <span id="year"></span> Trung Kiên — <a href="https://github.com/trungkiensilly" target="_blank" rel="noopener">GitHub</a></p>
@@ -107,38 +225,21 @@
       </div>
       
       <div class="modal-section">
-        <h3>🛠️ Công nghệ sử dụng</h3>
+        <h3> Công nghệ sử dụng</h3>
         <p id="modalTech" class="modal-tech"></p>
       </div>
       
       <div class="modal-section">
-        <h3>📊 Trạng thái</h3>
+        <h3> Trạng thái</h3>
         <p id="modalStatus" class="modal-status"></p>
-      </div>
-      
-      <div class="modal-section">
-        <h3>⭐ Đánh giá của bạn</h3>
-        <div class="rating-container">
-          <div class="stars" id="ratingStars">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-          </div>
-          <p class="rating-text">
-            <span id="currentRating">0</span>/5 sao 
-            (<span id="totalReviews">0</span> đánh giá)
-          </p>
-        </div>
       </div>
       
       <div class="modal-buttons">
         <a id="modalRepoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-primary">
-          📦 Xem Repository
+           Xem Repository
         </a>
         <a id="modalDemoLink" href="#" target="_blank" rel="noopener" class="modal-btn modal-btn-secondary" style="display: none;">
-          🚀 Xem Demo
+           Xem Demo
         </a>
       </div>
     </div>

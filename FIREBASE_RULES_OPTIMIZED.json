@@ -1,0 +1,33 @@
+{
+  "rules": {
+    "reviews": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["timestamp"],
+      ".validate": "newData.hasChildren(['reviewerName', 'reviewerPhone', 'projectName', 'rating', 'comment', 'timestamp'])",
+      "$reviewId": {
+        "rating": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5"
+        },
+        "reviewerName": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 100"
+        },
+        "comment": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "projectName": {
+          ".validate": "newData.isString() && newData.val().length >= 2"
+        },
+        "reviewerPhone": {
+          ".validate": "newData.isString()"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "userAgent": {
+          ".validate": "newData.isString()"
+        }
+      }
+    }
+  }
+}

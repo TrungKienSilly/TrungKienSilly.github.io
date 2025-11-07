@@ -21,14 +21,14 @@ function initFirebase() {
     if (typeof firebase !== 'undefined') {
       app = firebase.initializeApp(firebaseConfig);
       database = firebase.database();
-      console.log('✅ Firebase initialized successfully');
+      console.log(' Firebase initialized successfully');
       return true;
     } else {
-      console.warn('⚠️ Firebase SDK not loaded');
+      console.warn(' Firebase SDK not loaded');
       return false;
     }
   } catch (error) {
-    console.error('❌ Firebase initialization error:', error);
+    console.error(' Firebase initialization error:', error);
     return false;
   }
 }
