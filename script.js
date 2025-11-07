@@ -473,7 +473,7 @@ function showNotification(message, type = 'success') {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     z-index: 99999;
-    animation: slideDown 0.3s ease;
+    animation: notificationSlideDown 0.3s ease;
     max-width: 90%;
     text-align: center;
     font-weight: 600;
@@ -482,7 +482,7 @@ function showNotification(message, type = 'success') {
   document.body.appendChild(notification);
   
   setTimeout(() => {
-    notification.style.animation = 'slideUp 0.3s ease';
+    notification.style.animation = 'notificationSlideUp 0.3s ease';
     setTimeout(() => notification.remove(), 300);
   }, 3000);
 }

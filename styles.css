@@ -157,12 +157,12 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
   width: 90%;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.3s ease;
+  animation: modalSlideUp 0.3s ease;
   max-height: 85vh;
   overflow-y: auto;
 }
 
-@keyframes slideUp {
+@keyframes modalSlideUp {
   from {
     transform: translateY(50px);
     opacity: 0;
@@ -293,7 +293,7 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
 }
 
 /* Feedback animations */
-@keyframes slideDown {
+@keyframes notificationSlideDown {
   from {
     transform: translateX(-50%) translateY(-100%);
     opacity: 0;
@@ -304,7 +304,7 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
   }
 }
 
-@keyframes slideUp {
+@keyframes notificationSlideUp {
   from {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
