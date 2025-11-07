@@ -6,7 +6,7 @@ const firebaseConfig = {
   messagingSenderId: "1007276704259",
   appId: "1:1007276704259:web:6edc78c361e96af445c436",
   measurementId: "G-2ZZ4TN6KZ9",
-  databaseURL: "https://trungkien-portfolio-default-rtdb.firebaseio.com"
+  databaseURL: "https://trungkien-portfolio-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 // Initialize Firebase
