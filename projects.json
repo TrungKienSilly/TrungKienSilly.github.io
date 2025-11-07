@@ -1,113 +1,125 @@
 [
   {
     "name": "UI-Writing-TOEIC-test",
-    "description": "Giao diện web cho bài thi TOEIC Writing với SCSS styling.",
-    "tags": ["SCSS", "CSS", "UI/UX", "TOEIC"],
+    "description": "Ứng dụng web luyện thi TOEIC Writing với giao diện hiện đại, hỗ trợ đa dạng dạng bài.",
+    "tags": ["Angular", "SCSS", "UI/UX", "TOEIC"],
     "repo": "https://github.com/TrungKienSilly/UI-Writing-TOEIC-test",
     "demo": "writing-toeic/index.html",
     "detailedInfo": {
-      "fullDescription": "Giao diện web chuyên nghiệp cho bài thi TOEIC Writing, được thiết kế với SCSS để tạo trải nghiệm người dùng mượt mà và responsive trên mọi thiết bị.",
+      "fullDescription": "Ứng dụng luyện thi TOEIC Writing được xây dựng bằng Angular framework với giao diện thân thiện, trực quan. Hỗ trợ 3 dạng bài chính: viết câu mô tả ảnh, trả lời email và viết luận theo chuẩn TOEIC.",
       "features": [
-        "Giao diện thân thiện, dễ sử dụng",
-        "Responsive design cho mobile và desktop",
-        "SCSS modular architecture",
-        "Tối ưu hiệu suất tải trang"
+        "3 dạng bài TOEIC Writing: viết câu từ ảnh, trả lời email, viết luận",
+        "Giao diện hiện đại với gradient design và animations",
+        "Responsive hoàn toàn trên mọi thiết bị (mobile, tablet, desktop)",
+        "Hệ thống timer đếm ngược cho từng bài tập",
+        "Auto-save câu trả lời để tránh mất dữ liệu",
+        "Highlight và gợi ý ngữ pháp thông minh"
       ],
-      "technologies": "SCSS, CSS3, HTML5",
+      "technologies": "Angular, TypeScript, SCSS, HTML5, Responsive Design",
       "status": "Hoàn thành"
     }
   },
   {
     "name": "TrungKienSilly",
-    "description": "Repository cá nhân — profile và thông tin giới thiệu bản thân.",
-    "tags": ["Profile", "GitHub"],
+    "description": "GitHub Profile README — Trang giới thiệu cá nhân với thống kê và thông tin dự án.",
+    "tags": ["Profile", "GitHub", "Markdown"],
     "repo": "https://github.com/TrungKienSilly/TrungKienSilly",
     "detailedInfo": {
-      "fullDescription": "Repository cá nhân chứa thông tin profile, giới thiệu về bản thân, kỹ năng và các dự án đã thực hiện.",
+      "fullDescription": "Repository đặc biệt chứa README profile hiển thị trên trang GitHub cá nhân. Bao gồm giới thiệu bản thân, kỹ năng lập trình, công nghệ sử dụng, thống kê GitHub và liên kết đến các dự án nổi bật.",
       "features": [
-        "Trang README profile tùy chỉnh",
-        "Giới thiệu kỹ năng và công nghệ",
-        "Liên kết các dự án nổi bật",
-        "Thông tin liên hệ"
+        "README profile tùy chỉnh với badges và icons",
+        "Thống kê GitHub tự động (GitHub Stats, Top Languages)",
+        "Danh sách kỹ năng với logo công nghệ (shields.io)",
+        "Giới thiệu dự án nổi bật với links",
+        "Thông tin liên hệ và social media",
+        "GitHub streak và activity graph"
       ],
-      "technologies": "Markdown, GitHub",
-      "status": "Đang cập nhật"
+      "technologies": "Markdown, GitHub Profile README, Shields.io Badges",
+      "status": "Đang cập nhật thường xuyên"
     }
   },
   {
     "name": "Warmguys",
-    "description": "Website quản lý phòng gym, quản lý bảo trì thiết bị và lịch tập của khách hàng.",
-    "tags": ["CSS", "HTML", "Responsive"],
+    "description": "Hệ thống quản lý phòng gym toàn diện với module Admin & User, quản lý thiết bị, gói tập và email tự động.",
+    "tags": ["PHP", "MySQL", "MVC", "PHPMailer"],
     "repo": "https://github.com/TrungKienSilly/Warmguys",
-    "demo": "warmguys/Warmguys/View/User/index.html",
+    "demo": "https://tienchung21.github.io/warmguys/View/User/about.html",
     "detailedInfo": {
-      "fullDescription": "Hệ thống quản lý phòng gym toàn diện, hỗ trợ quản lý thành viên, lịch tập, bảo trì thiết bị và theo dõi doanh thu.",
+      "fullDescription": "Ứng dụng quản lý phòng tập gym được xây dựng theo mô hình MVC với PHP thuần và MySQL. Bao gồm 2 giao diện riêng biệt: Admin (quản trị viên) và User (thành viên), hỗ trợ quản lý thiết bị, gói tập, hóa đơn, và gửi thông báo qua email.",
       "features": [
-        "Quản lý thông tin hội viên",
-        "Đặt lịch tập theo thời gian",
-        "Quản lý bảo trì thiết bị",
-        "Theo dõi lịch sử luyện tập",
-        "Dashboard thống kê"
+        "Quản lý thiết bị gym (CRUD, cập nhật trạng thái, hình ảnh, bảo trì)",
+        "Quản lý thành viên và theo dõi lịch sử tập luyện",
+        "Quản lý gói tập, khuyến mãi và gia hạn tự động",
+        "Quản lý hóa đơn, thanh toán và thống kê doanh thu",
+        "Gửi thông báo/nhắc nhở tự động qua email (PHPMailer)",
+        "Dashboard với biểu đồ thống kê (Morris.js, ApexCharts)",
+        "Giao diện Admin/User tách biệt với nhiều vendor libraries"
       ],
-      "technologies": "HTML5, CSS3, JavaScript, PHP, MySQL",
-      "status": "Hoàn thành"
+      "technologies": "PHP (mysqli), MySQL/MariaDB, HTML5, CSS3, JavaScript (jQuery), PHPMailer, Morris.js, ApexCharts",
+      "status": "Hoàn thành (đang cải thiện bảo mật)"
     }
   },
   {
     "name": "TOEIC Speaking Test Website",
-    "description": "Website luyện thi TOEIC Speaking được xây dựng bằng TypeScript, kết hợp công nghệ azure chấm điểm bằng ai(độ lưu loát, độ chính xác).",
-    "tags": ["TypeScript", "TOEIC", "Testing", "Web App", "Azure AI"],
+    "description": "Ứng dụng luyện phát âm TOEIC Speaking với Azure AI, Angular 20, SSR và chấm điểm tự động thông minh.",
+    "tags": ["Angular 20", "TypeScript", "Azure AI", "SSR", "TOEIC"],
     "repo": "https://github.com/TrungKienSilly/TOEIC_Speaking_Test_Website",
     "demo": "TOEIC_Speaking_Test_Website/index.html",
     "detailedInfo": {
-      "fullDescription": "Nền tảng luyện thi TOEIC Speaking hiện đại với công nghệ AI của Azure để chấm điểm tự động dựa trên độ lưu loát và độ chính xác phát âm.",
+      "fullDescription": "Ứng dụng web luyện phát âm tiếng Anh cho kỳ thi TOEIC Speaking, xây dựng bằng Angular 20 với kiến trúc standalone component, signals và zoneless change detection. Tích hợp Azure Cognitive Services để đánh giá phát âm chính xác theo 4 tiêu chí, hỗ trợ Server-Side Rendering (SSR) với Express.",
       "features": [
-        "Chấm điểm tự động bằng Azure AI",
-        "Đánh giá độ lưu loát phát âm",
-        "Phân tích độ chính xác ngữ pháp",
-        "Phản hồi chi tiết từng câu trả lời",
-        "Lưu lịch sử bài thi"
+        "Luyện phát âm 10 chủ đề nguyên âm với 500+ từ vựng theo IPA",
+        "Azure Pronunciation Assessment: chấm điểm Accuracy, Completeness, Fluency, Overall",
+        "Phân tích âm tiết chi tiết với hệ thống penalty thông minh",
+        "Text-to-Speech hỗ trợ giọng Mỹ (US) và Anh (UK)",
+        "Countdown timer, quản lý quyền microphone, trạng thái trực quan",
+        "Server-Side Rendering (SSR) với Angular Universal và Express",
+        "Responsive design, error handling SSR, Web Audio API"
       ],
-      "technologies": "TypeScript, Angular, Azure Speech Services, AI Scoring",
-      "status": "Hoàn thành"
+      "technologies": "Angular 20, TypeScript, Azure Cognitive Services Speech SDK, Angular Universal, Express.js, SCSS, Web Audio API, Jasmine/Karma",
+      "status": "Hoàn thành - Production Ready"
     }
   },
   {
-    "name": "tuyensinh",
-    "description": "Hệ thống tuyển sinh được phát triển bằng PHP, hỗ trợ học sinh vừa thi tốt nghiệp xong có thể lựa chọn trường đại học phù hợp với điểm số của mình.",
-    "tags": ["PHP", "Backend", "Database"],
+    "name": "Hệ thống tuyển sinh ĐH",
+    "description": "Hệ thống quản lý và tư vấn tuyển sinh đại học, tìm kiếm trường theo điểm chuẩn với PHP và MySQL.",
+    "tags": ["PHP", "MySQL", "Admin Panel", "Search"],
     "repo": "https://github.com/TrungKienSilly/tuyensinh",
     "demo": "tuyensinh/index.html",
     "detailedInfo": {
-      "fullDescription": "Hệ thống tư vấn tuyển sinh thông minh, giúp học sinh tìm kiếm và lựa chọn trường đại học phù hợp dựa trên điểm thi và nguyện vọng.",
+      "fullDescription": "Hệ thống quản lý thông tin các trường đại học tuyển sinh toàn quốc, hỗ trợ học sinh tìm kiếm và lựa chọn trường phù hợp dựa trên điểm thi tốt nghiệp. Bao gồm frontend cho người dùng và admin panel quản lý dữ liệu.",
       "features": [
-        "Tìm kiếm trường theo điểm số",
-        "Gợi ý trường phù hợp",
-        "So sánh các trường đại học",
-        "Thông tin ngành học chi tiết",
-        "Quản lý nguyện vọng đăng ký"
+        "Tìm kiếm trường theo tên, tỉnh/thành, loại trường, ngành học",
+        "Tìm kiếm nâng cao theo điểm chuẩn và khối thi",
+        "Xem chi tiết trường: thông tin, ngành đào tạo, điểm chuẩn",
+        "Admin panel: CRUD trường, ngành, điểm chuẩn theo năm",
+        "Import dữ liệu hàng loạt từ file CSV",
+        "Dashboard thống kê tổng quan hệ thống",
+        "Responsive design, sắp xếp và lọc kết quả đa tiêu chí"
       ],
-      "technologies": "PHP, MySQL, Bootstrap, JavaScript",
+      "technologies": "PHP 7.4+, MySQL 5.7+, HTML5, CSS3, JavaScript, Responsive CSS",
       "status": "Hoàn thành"
     }
   },
   {
-    "name": "top1datsan",
-    "description": "Website đặt sân thể thao với HTML và các tính năng đặt lịch, theo mô hình B2B, cho phép công ty, doanh nghiệp hoặc đội bóng đặt sân tập luyện...",
-    "tags": ["HTML", "CSS", "JavaScript", "Booking"],
+    "name": "TOP1DATSAN",
+    "description": "Hệ thống đặt sân bóng B2B với ví điện tử, thanh toán VNPAY, quản lý booking và PHPMailer.",
+    "tags": ["PHP", "MySQL", "VNPAY", "PDO", "E-Wallet"],
     "repo": "https://github.com/TrungKienSilly/top1datsan",
     "demo": "top1datsan/index.html",
     "detailedInfo": {
-      "fullDescription": "Nền tảng đặt sân thể thao B2B, kết nối doanh nghiệp, câu lạc bộ với các sân vận động, sân bóng để đặt lịch tập luyện và thi đấu.",
+      "fullDescription": "Nền tảng đặt sân thể thao B2B dành cho doanh nghiệp, câu lạc bộ và đội bóng. Xây dựng bằng PHP với PDO/MySQL, tích hợp ví điện tử và thanh toán VNPAY, kèm trang quản trị và hệ thống email tự động.",
       "features": [
-        "Đặt lịch sân theo giờ",
-        "Quản lý booking B2B",
-        "Thanh toán trực tuyến",
-        "Xem lịch sử đặt sân",
-        "Đánh giá và review sân"
+        "Đặt lịch sân theo giờ với lịch thời gian trực quan",
+        "Quản lý booking B2B (công ty, CLB, đội bóng)",
+        "Ví điện tử: nạp tiền, thanh toán, lịch sử giao dịch",
+        "Tích hợp thanh toán VNPAY (sandbox & production)",
+        "Trang quản trị: quản lý sân, đặt sân, nhân viên, khách hàng",
+        "Gửi email xác nhận đặt sân và nhắc nhở (PHPMailer)",
+        "Đánh giá và review sân, xem lịch sử đặt sân"
       ],
-      "technologies": "HTML5, CSS3, JavaScript, PHP, MySQL",
-      "status": "Hoàn thành"
+      "technologies": "PHP 7.4+, MySQL/MariaDB, PDO, VNPAY API, PHPMailer, jQuery, Bootstrap, SCSS",
+      "status": "Hoàn thành (khuyến nghị nâng cấp bảo mật)"
     }
   }
 ]
