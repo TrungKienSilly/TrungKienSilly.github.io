@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bài viết — Trung Kien Silly</title>
+  <meta name="description" content="Blog và bài viết kỹ thuật của Trung Kiên">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="articles.css">
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="icon-sun">☀️</span>
+    <span class="icon-moon">🌙</span>
+  </button>
+  
+  <button id="backHomeBtn" class="back-home-btn" aria-label="Quay về trang chủ">
+    <span class="icon">🏠</span>
+    <span class="text" data-i18n="backHome">Trang chủ</span>
+  </button>
+  
+  <div class="language-selector">
+    <button id="languageToggle" class="language-btn" aria-label="Change language">
+      <span id="currentLangFlag" class="lang-flag">🇻🇳</span>
+      <span id="currentLangCode" class="lang-code">VI</span>
+    </button>
+    <div id="languageMenu" class="language-menu">
+      <button class="language-option" data-lang="vi">
+        <span class="lang-flag">🇻🇳</span>
+        <span class="lang-name">Tiếng Việt</span>
+      </button>
+      <button class="language-option" data-lang="en">
+        <span class="lang-flag">🇬🇧</span>
+        <span class="lang-name">English</span>
+      </button>
+      <button class="language-option" data-lang="zh">
+        <span class="lang-flag">🇨🇳</span>
+        <span class="lang-name">中文</span>
+      </button>
+      <button class="language-option" data-lang="th">
+        <span class="lang-flag">🇹🇭</span>
+        <span class="lang-name">ภาษาไทย</span>
+      </button>
+      <button class="language-option" data-lang="ru">
+        <span class="lang-flag">🇷🇺</span>
+        <span class="lang-name">Русский</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Articles Hero Section -->
+  <section class="articles-hero">
+    <div class="articles-hero-overlay"></div>
+    <div class="articles-hero-content">
+      <h1 class="articles-hero-title" data-i18n="articlesPageTitle">📝 Bài viết của tôi</h1>
+      <p class="articles-hero-subtitle" data-i18n="articlesPageSubtitle">Chia sẻ kiến thức, kinh nghiệm và những bài học trong lập trình</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- Filters -->
+    <section class="articles-filters">
+      <div class="filter-group">
+        <input 
+          id="articleSearch" 
+          type="text" 
+          data-i18n-placeholder="searchArticlesPlaceholder"
+          placeholder="Tìm kiếm bài viết..."
+          class="filter-input"
+        />
+        <select id="categoryFilter" class="filter-select">
+          <option value="" data-i18n="allCategories">Tất cả chủ đề</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section id="articlesGrid" class="articles-grid" aria-live="polite">
+      <p class="loading-text" data-i18n="loadingArticles">Đang tải bài viết...</p>
+    </section>
+  </main>
+
+  <!-- Article Modal -->
+  <div id="articleModal" class="article-modal">
+    <div class="article-modal-content">
+      <button class="article-modal-close">&times;</button>
+      <div id="articleModalBody" class="article-modal-body">
+        <!-- Content injected by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Trung Kiên — <a href="https://github.com/trungkiensilly" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <!-- Social Chat Bubble -->
+  <div class="social-bubble-container">
+    <button id="socialToggle" class="social-bubble" aria-label="Social links">
+      💬
+    </button>
+    <div id="socialMenu" class="social-menu">
+      <a href="https://www.instagram.com/trungkien_onthego" target="_blank" rel="noopener" class="social-link instagram">
+        <span class="icon">📷</span>
+        <span class="label">Instagram</span>
+      </a>
+      <a href="mailto:kiennguyen300803@gmail.com" class="social-link gmail">
+        <span class="icon">📧</span>
+        <span class="label">Gmail</span>
+      </a>
+      <a href="https://www.tiktok.com/@xucxichdog" target="_blank" rel="noopener" class="social-link tiktok">
+        <span class="icon">🎵</span>
+        <span class="label">TikTok</span>
+      </a>
+      <a href="https://www.facebook.com/nguoicodonnhatthegioinayluon" target="_blank" rel="noopener" class="social-link facebook">
+        <span class="icon">👤</span>
+        <span class="label">Facebook</span>
+      </a>
+      <a href="https://www.linkedin.com/in/trungkiensilly" target="_blank" rel="noopener" class="social-link linkedin">
+        <span class="icon">💼</span>
+        <span class="label">LinkedIn</span>
+      </a>
+      <a href="https://huggingface.co/trungkiensilly" target="_blank" rel="noopener" class="social-link huggingface">
+        <span class="icon">🤗</span>
+        <span class="label">Hugging Face</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="translations.js"></script>
+  <script src="articles-data.js"></script>
+  <script src="articles.js"></script>
+</body>
+</html>

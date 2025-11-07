@@ -27,7 +27,7 @@ themeToggle.addEventListener('click', ()=>{
 
 // Articles button click
 articlesBtn.addEventListener('click', () => {
-  showNotification(t('articlesDev'), 'success');
+  window.location.href = 'articles.html';
 });
 
 // Language selector

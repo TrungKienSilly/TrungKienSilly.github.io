@@ -12,8 +12,17 @@ const translations = {
     searchPlaceholder: 'Tìm theo tên hoặc mô tả...',
     allTags: 'Tất cả tags',
     
+    // Articles page
+    articlesPageTitle: '📝 Bài viết của tôi',
+    articlesPageSubtitle: 'Chia sẻ kiến thức, kinh nghiệm và những bài học trong lập trình',
+    searchArticlesPlaceholder: 'Tìm kiếm bài viết...',
+    allCategories: 'Tất cả chủ đề',
+    loadingArticles: 'Đang tải bài viết...',
+    noArticles: 'Không tìm thấy bài viết nào.',
+    
     // Buttons
     articlesBtn: 'Bài viết',
+    backHome: 'Trang chủ',
     writeReview: 'Viết đánh giá',
     moreInfo: 'More info',
     repo: 'Repo',
@@ -99,8 +108,17 @@ const translations = {
     searchPlaceholder: 'Search by name or description...',
     allTags: 'All tags',
     
+    // Articles page
+    articlesPageTitle: '📝 My Articles',
+    articlesPageSubtitle: 'Sharing knowledge, experience, and lessons learned in programming',
+    searchArticlesPlaceholder: 'Search articles...',
+    allCategories: 'All Topics',
+    loadingArticles: 'Loading articles...',
+    noArticles: 'No articles found.',
+    
     // Buttons
     articlesBtn: 'Articles',
+    backHome: 'Home',
     writeReview: 'Write Review',
     moreInfo: 'More info',
     repo: 'Repo',
@@ -186,8 +204,17 @@ const translations = {
     searchPlaceholder: '按名称或描述搜索...',
     allTags: '所有标签',
     
+    // Articles page
+    articlesPageTitle: '📝 我的文章',
+    articlesPageSubtitle: '分享编程知识、经验和教训',
+    searchArticlesPlaceholder: '搜索文章...',
+    allCategories: '所有主题',
+    loadingArticles: '加载文章中...',
+    noArticles: '未找到文章。',
+    
     // Buttons
     articlesBtn: '文章',
+    backHome: '主页',
     writeReview: '写评论',
     moreInfo: '更多信息',
     repo: '仓库',
@@ -273,8 +300,17 @@ const translations = {
     searchPlaceholder: 'ค้นหาตามชื่อหรือคำอธิบาย...',
     allTags: 'แท็กทั้งหมด',
     
+    // Articles page
+    articlesPageTitle: '📝 บทความของฉัน',
+    articlesPageSubtitle: 'แบ่งปันความรู้ ประสบการณ์ และบทเรียนในการเขียนโปรแกรม',
+    searchArticlesPlaceholder: 'ค้นหาบทความ...',
+    allCategories: 'หัวข้อทั้งหมด',
+    loadingArticles: 'กำลังโหลดบทความ...',
+    noArticles: 'ไม่พบบทความ',
+    
     // Buttons
     articlesBtn: 'บทความ',
+    backHome: 'หน้าแรก',
     writeReview: 'เขียนรีวิว',
     moreInfo: 'ข้อมูลเพิ่มเติม',
     repo: 'ที่เก็บ',
@@ -360,8 +396,17 @@ const translations = {
     searchPlaceholder: 'Поиск по названию или описанию...',
     allTags: 'Все теги',
     
+    // Articles page
+    articlesPageTitle: '📝 Мои статьи',
+    articlesPageSubtitle: 'Делюсь знаниями, опытом и уроками в программировании',
+    searchArticlesPlaceholder: 'Поиск статей...',
+    allCategories: 'Все темы',
+    loadingArticles: 'Загрузка статей...',
+    noArticles: 'Статьи не найдены.',
+    
     // Buttons
     articlesBtn: 'Статьи',
+    backHome: 'Главная',
     writeReview: 'Написать отзыв',
     moreInfo: 'Подробнее',
     repo: 'Репозиторий',
