@@ -198,7 +198,8 @@ function openProjectModal(project){
     modalRepoLink.style.display = 'none';
   }
   
-  if(project.demo){
+  // Only show Demo button for Warmguys project
+  if(project.demo && project.name === 'Warmguys'){
     modalDemoLink.href = project.demo;
     modalDemoLink.style.display = 'inline-block';
   } else {
