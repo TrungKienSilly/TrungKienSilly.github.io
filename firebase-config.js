@@ -1,13 +1,12 @@
-// Firebase Configuration
-// Thay thế các giá trị này bằng thông tin từ Firebase Console của bạn
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com"
+  apiKey: "AIzaSyA6x0HTHp9jOkDDX_qx1mAaVTtndaCjtVA",
+  authDomain: "trungkien-portfolio.firebaseapp.com",
+  projectId: "trungkien-portfolio",
+  storageBucket: "trungkien-portfolio.firebasestorage.app",
+  messagingSenderId: "1007276704259",
+  appId: "1:1007276704259:web:6edc78c361e96af445c436",
+  measurementId: "G-2ZZ4TN6KZ9",
+  databaseURL: "https://trungkien-portfolio-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase
