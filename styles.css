@@ -141,7 +141,7 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
 }
 
 .modal-content {
-  background: var(--card-bg);
+  background: var(--card);
   border: 2px solid var(--accent);
   margin: 2rem;
   padding: 2.5rem;
