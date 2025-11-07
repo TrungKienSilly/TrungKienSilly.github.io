@@ -170,8 +170,20 @@ const currentRatingEl = document.getElementById('currentRating');
 const totalReviewsEl = document.getElementById('totalReviews');
 
 let currentProject = null;
+let useFirebase = false;
+let currentRatingListener = null;
 
-function openProjectModal(project){
+// Initialize Firebase when page loads
+window.addEventListener('DOMContentLoaded', () => {
+  useFirebase = initFirebase();
+  if (useFirebase) {
+    console.log('🔥 Using Firebase for ratings');
+  } else {
+    console.log('💾 Using localStorage for ratings');
+  }
+});
+
+async function openProjectModal(project){
   currentProject = project;
   const details = project.detailedInfo || {};
   
@@ -196,11 +208,35 @@ function openProjectModal(project){
   // Status
   modalStatus.textContent = details.status || 'Đang phát triển';
   
-  // Rating
-  const rating = details.rating || { average: 0, total: 0 };
-  currentRatingEl.textContent = rating.average.toFixed(1);
-  totalReviewsEl.textContent = rating.total;
-  updateStarsDisplay(rating.average);
+  // Stop previous listener if exists
+  if (currentRatingListener) {
+    currentRatingListener.off();
+    currentRatingListener = null;
+  }
+  
+  // Rating - Load from Firebase or use default
+  if (useFirebase) {
+    // Listen to real-time updates
+    currentRatingListener = listenToRatings(project.name, (ratingData) => {
+      currentRatingEl.textContent = ratingData.average.toFixed(1);
+      totalReviewsEl.textContent = ratingData.total;
+      updateStarsDisplay(ratingData.average);
+    });
+  } else {
+    // Use data from JSON or localStorage
+    const rating = details.rating || { average: 0, total: 0 };
+    const localRatings = getLocalRatings(project.name);
+    
+    if (localRatings.total > 0) {
+      currentRatingEl.textContent = localRatings.average.toFixed(1);
+      totalReviewsEl.textContent = localRatings.total;
+      updateStarsDisplay(localRatings.average);
+    } else {
+      currentRatingEl.textContent = rating.average.toFixed(1);
+      totalReviewsEl.textContent = rating.total;
+      updateStarsDisplay(rating.average);
+    }
+  }
   
   // Links
   if(project.repo){
@@ -262,6 +298,24 @@ ratingStars.addEventListener('click', (e)=>{
 });
 
 function submitRating(project, rating){
+  if (useFirebase) {
+    // Save to Firebase
+    saveRatingToFirebase(project.name, rating).then(success => {
+      if (success) {
+        showRatingFeedback(rating);
+        // Real-time listener will update the display automatically
+      } else {
+        // Fallback to localStorage
+        saveRatingLocally(project, rating);
+      }
+    });
+  } else {
+    // Save to localStorage
+    saveRatingLocally(project, rating);
+  }
+}
+
+function saveRatingLocally(project, rating) {
   // Get existing ratings from localStorage
   const ratings = JSON.parse(localStorage.getItem('projectRatings') || '{}');
   const projectKey = project.name.replace(/\s+/g, '_');
@@ -293,6 +347,23 @@ function submitRating(project, rating){
   showRatingFeedback(rating);
 }
 
+function getLocalRatings(projectName) {
+  const ratings = JSON.parse(localStorage.getItem('projectRatings') || '{}');
+  const projectKey = projectName.replace(/\s+/g, '_');
+  
+  if (!ratings[projectKey] || ratings[projectKey].length === 0) {
+    return { average: 0, total: 0 };
+  }
+  
+  const allRatings = ratings[projectKey];
+  const average = allRatings.reduce((a,b)=>a+b, 0) / allRatings.length;
+  
+  return {
+    average: average,
+    total: allRatings.length
+  };
+}
+
 function showRatingFeedback(rating){
   const messages = {
     1: 'Cảm ơn phản hồi! Tôi sẽ cố gắng cải thiện.',
@@ -314,6 +385,12 @@ function showRatingFeedback(rating){
 }
 
 function closeProjectModal(){
+  // Clean up listener when closing modal
+  if (currentRatingListener) {
+    currentRatingListener.off();
+    currentRatingListener = null;
+  }
+  
   projectModal.classList.remove('active');
   document.body.style.overflow = '';
 }
