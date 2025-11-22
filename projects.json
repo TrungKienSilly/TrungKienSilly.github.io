@@ -121,5 +121,25 @@
       "technologies": "PHP 7.4+, MySQL/MariaDB, PDO, VNPAY API, PHPMailer, jQuery, Bootstrap, SCSS",
       "status": "Hoàn thành (khuyến nghị nâng cấp bảo mật)"
     }
+  },
+  {
+    "name": "Dudoandiemchuan-daihoc",
+    "description": "Hệ thống Dự đoán Điểm chuẩn Đại học - Công cụ hỗ trợ thí sinh dự đoán khả năng đậu học rớt cho từng nguyện vọng đại học.",
+    "tags": ["PHP", "Python", "AI", "CSS", "MySQL"],
+    "repo": "https://github.com/TrungKienSilly/Dudoandiemchuan-daihoc",
+    "detailedInfo": {
+      "fullDescription": "Hệ thống tra cứu và dự đoán điểm chuẩn tuyển sinh đại học với tích hợp AI thông minh, giúp thí sinh đưa ra quyết định và xử hướng tuyển sinh dễ dùa ra tỷ lệ ước tính, giúp học sinh tham khảo và sắp xếp nguyện vọng hợp lý hơn.",
+      "features": [
+        "Tìm kiếm trường đại học theo tên, ngành, khu vực và điểm chuẩn",
+        "Dự đoán khả năng trúng tuyển dựa trên điểm thi và nguyện vọng",
+        "Tra cứu lịch sử điểm chuẩn các năm trước",
+        "Tích hợp AI để phân tích dữ liệu điểm chuẩn và xu hướng",
+        "Hệ thống phân tích dữ liệu điểm chuẩn và xử lý nguyện vọng",
+        "Giao diện thân thiện, dễ sử dụng cho học sinh",
+        "API Python để xử lý các thuật toán dự đoán phức tạp"
+      ],
+      "technologies": "PHP 8.1%, CSS 13.0%, Python 5.2%, MySQL, AI/Machine Learning",
+      "status": "Hoàn thành"
+    }
   }
 ]

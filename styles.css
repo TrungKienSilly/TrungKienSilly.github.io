@@ -129,7 +129,11 @@ body.dark-mode .theme-toggle .icon-moon{display:block}
   .controls-top select{min-width:100%}
   .site-header h1{font-size:1.5rem}
   .articles-btn{width:44px;height:44px;font-size:1.2rem;top:16px;right:16px}
-  .theme-toggle{width:44px;height:44px;font-size:1.2rem;top:70px;right:16px}
+  .language-selector{top:70px;right:16px}
+  .language-btn{width:44px;height:44px;font-size:1rem}
+  .language-btn .lang-flag{font-size:1rem}
+  .language-btn .lang-code{font-size:0.55rem}
+  .theme-toggle{width:44px;height:44px;font-size:1.2rem;top:124px;right:16px}
   .social-bubble{width:54px;height:54px;font-size:1.6rem}
   .social-bubble-container{bottom:20px;right:20px}
   .social-menu{min-width:180px;bottom:64px}
