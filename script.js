@@ -628,8 +628,8 @@ async function openProjectModal(project){
     modalRepoLink.style.display = 'none';
   }
   
-  // Only show Demo button for Warmguys project
-  if(project.demo && project.name === 'Warmguys'){
+  // Show Demo button for any project with a demo link
+  if(project.demo){
     modalDemoLink.href = project.demo;
     modalDemoLink.textContent = t('viewDemo');
     modalDemoLink.style.display = 'inline-block';
