@@ -127,6 +127,7 @@
     "description": "Hệ thống Dự đoán Điểm chuẩn Đại học - Công cụ hỗ trợ thí sinh dự đoán khả năng đậu học rớt cho từng nguyện vọng đại học.",
     "tags": ["PHP", "Python", "AI", "CSS", "MySQL"],
     "repo": "https://github.com/TrungKienSilly/Dudoandiemchuan-daihoc",
+    "demo": "https://tuyensinh247.site/search_score",
     "detailedInfo": {
       "fullDescription": "Hệ thống tra cứu và dự đoán điểm chuẩn tuyển sinh đại học với tích hợp AI thông minh, giúp thí sinh đưa ra quyết định và xử hướng tuyển sinh dễ dùa ra tỷ lệ ước tính, giúp học sinh tham khảo và sắp xếp nguyện vọng hợp lý hơn.",
       "features": [
